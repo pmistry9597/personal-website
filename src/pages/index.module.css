@@ -1,0 +1,8 @@
+.shitter * {
+    margin: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: inherit;
+    color: inherit;
+    font-size: inherit;
+    text-transform: uppercase;
+}
