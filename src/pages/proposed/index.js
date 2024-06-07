@@ -7,12 +7,14 @@ import styles from './index.module.css';
 import Head from "next/head";
 import { ThemeProvider } from "@emotion/react";
 import SeparatedList from "@/components/separated_list";
+import CorneredBox from "@/components/cornered";
 // https://www.pexels.com/photo/view-of-countryside-under-evening-purple-sky-544268/
 
 const myTheme = createTheme({
     typography: {
         posterheader: {
-            fontFamily: '"Oswald", sans-serif',
+            // fontFamily: '"Oswald", sans-serif',
+            fontFamily: '"Orbitron", sans-serif',
             fontWeight: 'bold',
             fontSize: '60px',
             // color: '#c60327',
@@ -26,7 +28,15 @@ const myTheme = createTheme({
         posterbody: {
             fontFamily: '"Edu TAS Beginner", cursive',
             fontSize: '20px',
-        }
+        },
+        cardheader: {
+            fontFamily: '"Orbitron", sans-serif',
+            fontSize: '80px',
+        },
+        cardbody: {
+            fontFamily: '"Edu TAS Beginner", cursive',
+            fontSize: '30px',
+        },
     },
     palette: {
         ochre: {
@@ -81,19 +91,7 @@ export default function PersonalHome() {
                     }}
                     >
                         <Paper elevation={elev}>
-                            <Box sx={{width: 1, height: 1, gap: '10px', position: 'relative',
-                                display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                                <div style={{padding: '70px', display: 'flex', gap: '10px', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                                <div style={{
-                                    width: '200px', height: '40%', position: 'absolute', left: 0, top: 0,
-                                    borderLeft: '40px solid #0afce4', borderTop: '40px solid #0afce4', borderTopLeftRadius: '30px',
-                                }
-                                    }></div>
-                                <div style={{
-                                    width: '150px', height: '40%', position: 'absolute', right: 0, bottom: 0,
-                                    borderRight: '40px solid #fc0fe4', borderBottom: '40px solid #fc0fe4', borderBottomRightRadius: '30px',
-                                }
-                                    }></div>
+                            <CorneredBox cornerRad='30px' topLeftCol='#0afce4' bottomRightCol='#fc0fe4' width='250px' height='30%'>
                                 <Typography variant="posterheader" style={{textTransform: 'uppercase', textShadow: '#992 1px 0 10px', letterSpacing: '2px', wordSpacing: '2px'}}>
                                     I am Preet Mistry
                                     {/* Welcome to my Goon Cave */}
@@ -122,32 +120,57 @@ export default function PersonalHome() {
                                     style={{ width: '100%', height: '100%' }} // optional
                                 />
                                 </div>
-                                <Typography variant="posterbody" style={{width: '70%', gap: '0px', letterSpacing: '1px', border: 'solid pink 0px', borderRadius: '4px', padding: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                                    I graduated as a computer engineer from the University of Toronto in 2024.
-
-                                    {/* <p style={{margin: '5px'}}>I have a passion for building things while at the same time appreciating new knowledge.
-                                    My creations can exist either in software, or have a more a physical manifestation.</p>
-
-                                    <p style={{margin: '5px'}}>On my own time, I dragon boat, play the piano, and practice jiu-jitsu.</p> */}
+                                <Typography variant="posterbody" style={{width: '70%', gap: '0px', letterSpacing: '1px', border: 'solid pink 0px', borderRadius: '4px', padding: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
+                                    I graduated as a computer engineer from the University of Toronto in 2024. Currently, I am doing deep learning research in chemistry at the MSRG group.
                                 </Typography>
                                 <div style={{display: 'flex', gap: '40px', margin: '10px'}}>
                                     <Button variant="outlined" size="large" color="ochre">Find Out More</Button>
                                     <Button variant="contained" size="large" color="ochre">Contact Me!</Button>
+                                {/* </div> */}
                                 </div>
-                                </div>
-                            </Box>
+                            </CorneredBox>
                         </Paper>
                     </Box>
             </div>
             <div style={{zIndex: 2, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0px'}}>
             <Container maxWidth={false} fixed style={{zIndex: 2, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0px'}}>
-                <Box sx={{ background: 'rgba(70,70,70,1)', 
+                <Box sx={{ background: 'rgba(200,200,200,1)', 
                         height: '100vh', 
                         width: 1,
                         borderRadius: '5px', 
+                        // padding: '20px',
                         display: 'flex', 
-                        justifyContent: 'center', 
+                        flexDirection: 'column',
+                        // justifyContent: 'center', 
                         alignItems: 'center', }} >
+                            <Paper elevation={elev} style={{width: '100%', borderRadius: '5px', overflow: 'hidden'}}>
+                                <Box sx={{padding: '40px', backgroundColor: '#55e', display: 'flex', justifyContent: 'center'}}>
+                                    <Typography variant="cardheader" style={{color: 'white'}}>
+                                        About Me
+                                    </Typography>
+                                </Box>
+                            </Paper>
+                            <Paper elevation={elev} style={{marginTop: '10px', padding: '10px', borderRadius: '5px', overflow: 'hidden'}}>
+                                <CorneredBox cornerRad='30px' topLeftCol='#4f4' bottomRightCol='#f22' width='20%' height='60%'>
+                                <Box sx={{padding: '100px', backgroundColor: 'white', display: 'flex', justifyContent: 'center'}}>
+                                    <Typography variant="cardbody" style={{}}>
+                                        <p style={{margin: '5px', textAlign: 'center'}}>I have a passion for building things while at the same time appreciating new knowledge.
+                                        My creations can exist either in software, or have a more a physical manifestation.</p>
+
+                                        <p style={{margin: '5px', textAlign: 'center'}}>On my own time, I dragon boat, play the piano, and practice jiu-jitsu.</p>
+                                    </Typography>
+                                </Box>
+                                </CorneredBox>
+                            </Paper>
+                            {/* Spacer */}
+                            <Box sx={{width: 1, height: '60px'}}></Box>
+                            <Paper elevation={elev} style={{width: '100%', borderRadius: '5px', overflow: 'hidden'}}>
+                                <Box sx={{padding: '40px', backgroundColor: '#f11', display: 'flex', justifyContent: 'center'}}>
+                                    <Typography variant="cardheader" style={{color: 'white'}}>
+                                        Projects
+                                    </Typography>
+                                </Box>
+                            </Paper>
                 </Box>
             </Container>
             </div>
