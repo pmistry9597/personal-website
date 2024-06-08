@@ -33,6 +33,10 @@ const myTheme = createTheme({
             fontFamily: '"Orbitron", sans-serif',
             fontSize: '80px',
         },
+        astral: {
+            fontFamily: '"Orbitron", sans-serif',
+            fontSize: '200px',
+        },
         cardbody: {
             fontFamily: '"Edu TAS Beginner", cursive',
             fontSize: '30px',
@@ -144,10 +148,15 @@ export default function PersonalHome() {
                         // justifyContent: 'center', 
                         alignItems: 'center', }} >
                             <Paper elevation={elev} style={{width: '100%', borderRadius: '5px', overflow: 'hidden'}}>
-                                <Box sx={{padding: '40px', backgroundColor: '#55e', display: 'flex', justifyContent: 'center'}}>
+                            <Box sx={{position: 'relative', padding: '40px', backgroundColor: '#55e', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
                                     <Typography variant="cardheader" style={{color: 'white'}}>
                                         About Me
                                     </Typography>
+                                    <Box sx={{position: 'absolute', top: 0, left: 0, height: 1, width: 1, display: 'flex', opacity: 0.4, backgroundClip: 'text', backgroundImage: 'linear-gradient(0deg, #fff 0%, transparent 100%)', transform: 'rotateX(180deg)', justifyContent: 'center', alignItems: 'center'}}>
+                                        <Typography variant="astral" style={{color: 'transparent', transform: 'translate(0px, -0%)',}}>
+                                            <div>About Me</div>
+                                        </Typography>
+                                    </Box>
                                 </Box>
                             </Paper>
                             <Paper elevation={elev} style={{marginTop: '10px', padding: '10px', borderRadius: '5px', overflow: 'hidden'}}>
@@ -165,10 +174,15 @@ export default function PersonalHome() {
                             {/* Spacer */}
                             <Box sx={{width: 1, height: '60px'}}></Box>
                             <Paper elevation={elev} style={{width: '100%', borderRadius: '5px', overflow: 'hidden'}}>
-                                <Box sx={{padding: '40px', backgroundColor: '#f11', display: 'flex', justifyContent: 'center'}}>
+                                <Box sx={{position: 'relative', padding: '40px', backgroundColor: '#f11', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
                                     <Typography variant="cardheader" style={{color: 'white'}}>
-                                        Projects
+                                        <div className={styles.reflect} txt='Projects'>Projects</div>
                                     </Typography>
+                                    <Box sx={{position: 'absolute', top: 0, left: 0, height: 1, width: 1, display: 'flex', opacity: 0.5, backgroundClip: 'text', backgroundImage: 'linear-gradient(0deg, #fff 0%, transparent 100%)', transform: 'rotateX(180deg)', justifyContent: 'center', alignItems: 'center'}}>
+                                        <Typography variant="astral" style={{color: 'transparent', transform: 'translate(0px, -10%)',}}>
+                                            <div>Projects</div>
+                                        </Typography>
+                                    </Box>
                                 </Box>
                             </Paper>
                 </Box>
