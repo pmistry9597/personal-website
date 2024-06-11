@@ -1,4 +1,4 @@
-import { Box, Button, Container, Paper, Typography, createTheme } from "@mui/material";
+import { Box, Button, Container, Grid, Paper, Typography, createTheme } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
 import backIm from '../../gr8/0.jpg';
@@ -9,6 +9,7 @@ import { ThemeProvider } from "@emotion/react";
 import SeparatedList from "@/components/separated_list";
 import CorneredBox from "@/components/cornered";
 import SkillsList from "@/components/skills_list";
+import ProjectCard from "@/components/project_card";
 // https://www.pexels.com/photo/view-of-countryside-under-evening-purple-sky-544268/
 
 const myTheme = createTheme({
@@ -158,46 +159,56 @@ export default function PersonalHome() {
                                     </Typography>
                                     <Box sx={{position: 'absolute', top: 0, left: 0, height: 1, width: 1, display: 'flex', opacity: 0.4, backgroundClip: 'text', backgroundImage: 'linear-gradient(0deg, #fff 0%, transparent 100%)', transform: 'rotateX(180deg)', justifyContent: 'center', alignItems: 'center'}}>
                                         <Typography variant="astral" style={{color: 'transparent', transform: 'translate(0px, -0%)',}}>
-                                            About Me
+                                            <div>About Me</div>
                                         </Typography>
                                     </Box>
                                 </Box>
                             </Paper>
                             <Box sx={{width: 1}}>
+                            <Paper elevation={10} style={{margin: '20px'}}>
+                                <Box sx={{bgcolor: '#e0e', borderRadius: '5px', flexWrap: 'wrap', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                                    <Box sx={{padding: '40px', color: 'white', textTransform: 'uppercase', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                    <Typography variant="cardheader" style={{fontSize: '70px', textShadow: '#999 5px 5px 10px'}}>
+                                        Skills
+                                    </Typography>
+                                    </Box>
+                                    <Box sx={{maxWidth: 0.7, padding: '10px',fontSize: '20px', flexWrap: 'wrap', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                                        <SkillsList items={[
+                                                            ['C++/C', 'blueviolet'], 
+                                                            ['Python', 'orange'], 
+                                                            ['Java', 'red'],
+                                                            ['Javascript', '#dd0'],
+                                                            ['Rust', '#f33'], 
+                                                            ['SQL', 'lightblue'],
+                                                            ['CSS', 'blue'],
+                                                            ['PyTorch', '#f63'],
+                                                            ['Docker', '#09e'],
+                                                            ['Deep Learning', '#f57'],
+                                                            ['React', '#09f'],
+                                                            ['Angular', '#d22'],
+                                                            ['Amazon Web Services (AWS)', 'orange'],
+                                                            ['NodeJS', '#0c5'],
+                                                        ]} spacing={2} />
+                                        <Typography variant="cardbody" style={{maxHeight: '5px', fontSize: '20px', color: 'white', fontWeight: 'bold', padding: '10px'}}>
+                                            Don't forget to check out my resume!
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            </Paper>
+                            </Box>
+                            <Box sx={{width: 1}}>
                             <Paper elevation={10} style={{margin: '20px', padding: '10px', borderRadius: '5px', flexGrow: 5, overflow: 'hidden'}}>
-                                <CorneredBox cornerRad='30px' topLeftCol='#4f4' bottomRightCol='#f22' width='20%' height='60%'>
-                                <Box sx={{padding: '100px', backgroundColor: 'white', display: 'flex', justifyContent: 'center'}}>
+                                <CorneredBox cornerRad='15px' topLeftCol='#4f4' bottomRightCol='#f22' width='20%' height='60%'>
+                                <Box sx={{padding: '40px', backgroundColor: 'white', display: 'flex', justifyContent: 'center'}}>
                                     <Typography variant="cardbody" style={{}}>
                                         <p style={{margin: '5px', textAlign: 'center'}}>
-                                        I have a passion for building things while at the same time appreciating new knowledge.
+                                        I have a passion for building things. At the same time, I appreciate having new knowledge.
                                         My creations can exist either in software, or have a more a physical manifestation.</p>
 
                                         <p style={{margin: '5px', textAlign: 'center'}}>On my own time, I dragon boat, play the piano, and practice jiu-jitsu.</p>
                                     </Typography>
                                 </Box>
                                 </CorneredBox>
-                            </Paper>
-                            </Box>
-                            <Box sx={{width: 1}}>
-                            <Paper elevation={10} style={{margin: '20px'}}>
-                                <Box sx={{bgcolor: '#e0e', borderRadius: '5px', flexWrap: 'wrap', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                                    <Box sx={{padding: '40px', color: 'white', textTransform: 'uppercase', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                                    <Typography variant="cardheader" style={{fontSize: '70px', textShadow: '#999 5px 5px 10px'}}>
-                                        Skills
-                                    </Typography>
-                                    </Box>
-                                    <Box sx={{flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                                        <SkillsList items={[
-                                                            ['C++/C', 'blueviolet'], 
-                                                            ['Python', 'orange'], 
-                                                            ['Java', 'red'],
-                                                            ['Javascript', '#dd0'],
-                                                            ['SQL', 'lightblue'],
-                                                            ['CSS', 'blue'],
-                                                            ['Rust', '#f33'], 
-                                                        ]} />
-                                    </Box>
-                                </Box>
                             </Paper>
                             </Box>
                             {/* Spacer */}
@@ -214,6 +225,47 @@ export default function PersonalHome() {
                                     </Box>
                                 </Box>
                             </Paper>
+                            <Box sx={{width: 1}}>
+                            <Paper elevation={10} style={{margin: '20px', padding: '10px', borderRadius: '5px', flexGrow: 5, overflow: 'hidden'}}>
+                                <Box sx={{padding: '40px', backgroundColor: 'white', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
+                                    <Box sx={{width: 1}}>
+                                        <Grid container spacing={3} direction='row' justifyContent='start'>
+                                            <Grid item>
+                                                <ProjectCard title='Climate Hack 2022' body='
+                                                    My submission for Climate Hack 2022. I managed to placed 14th out of over 130 participants!
+                                                '
+                                                skills={[['Python', 'orange'],['Deep Learning', '#f57'],['PyTorch', '#f63'],]} 
+                                                />
+                                            </Grid>
+                                            <Grid item>
+                                                <ProjectCard title='Reinforcement Learning Algorithms Demo' body='
+                                                    A demonstration of some prominent reinforcement learning algorithms.
+                                                '
+                                                skills={[['Python', 'orange'],['Deep Learning', '#f57'],['PyTorch', '#f63'],]}  
+                                                />
+                                            </Grid>
+                                            <Grid item>
+                                                <ProjectCard title='Space Explorer' body='
+                                                    Space game, allows you to learn about the solar system, gravity, and orbits! 
+                                                '
+                                                skills={[['Javascript', '#dd0']]}
+                                                />
+                                            </Grid>
+                                            <Grid item>
+                                                <ProjectCard title='Circuit Builder' body='
+                                                    Circuit game with lessons and a simulator.
+                                                '
+                                                skills={[['Javascript', '#dd0']]}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </Box>
+                                    <Typography variant="cardbody" style={{maxHeight: '5px', fontSize: '30px', padding: '30px'}}>
+                                        Many more can be found on my GitHub!
+                                    </Typography>
+                                </Box>
+                            </Paper>
+                            </Box>
                 </Box>
             </Container>
             </div>
