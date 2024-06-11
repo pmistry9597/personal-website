@@ -8,6 +8,7 @@ import Head from "next/head";
 import { ThemeProvider } from "@emotion/react";
 import SeparatedList from "@/components/separated_list";
 import CorneredBox from "@/components/cornered";
+import SkillsList from "@/components/skills_list";
 // https://www.pexels.com/photo/view-of-countryside-under-evening-purple-sky-544268/
 
 const myTheme = createTheme({
@@ -40,6 +41,9 @@ const myTheme = createTheme({
         cardbody: {
             fontFamily: '"Edu TAS Beginner", cursive',
             fontSize: '30px',
+        },
+        def: {
+            fontFamily: '"Orbitron", sans-serif',
         },
     },
     palette: {
@@ -83,7 +87,7 @@ export default function PersonalHome() {
                         display: 'flex',
                         flexWrap: 'wrap',
                         '& > :not(style)': {
-                        m: 1,
+                        // m: 1,
                         width: 1,
                         // height: '40vh',
                         padding: '30px',
@@ -96,9 +100,9 @@ export default function PersonalHome() {
                     >
                         <Paper elevation={elev}>
                             <CorneredBox cornerRad='30px' topLeftCol='#0afce4' bottomRightCol='#fc0fe4' width='250px' height='30%'>
+                                <Box sx={{margin: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                                 <Typography variant="posterheader" style={{textTransform: 'uppercase', textShadow: '#992 1px 0 10px', letterSpacing: '2px', wordSpacing: '2px'}}>
                                     I am Preet Mistry
-                                    {/* Welcome to my Goon Cave */}
                                 </Typography>
                                 <Typography variant="subheader" style={{textTransform: 'uppercase'}}>
                                     <SeparatedList 
@@ -130,8 +134,8 @@ export default function PersonalHome() {
                                 <div style={{display: 'flex', gap: '40px', margin: '10px'}}>
                                     <Button variant="outlined" size="large" color="ochre">Find Out More</Button>
                                     <Button variant="contained" size="large" color="ochre">Contact Me!</Button>
-                                {/* </div> */}
                                 </div>
+                                </Box>
                             </CorneredBox>
                         </Paper>
                     </Box>
@@ -139,31 +143,33 @@ export default function PersonalHome() {
             <div style={{zIndex: 2, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0px'}}>
             <Container maxWidth={false} fixed style={{zIndex: 2, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0px'}}>
                 <Box sx={{ background: 'rgba(200,200,200,1)', 
-                        height: '100vh', 
+                        // height: '100vh', 
                         width: 1,
                         borderRadius: '5px', 
                         // padding: '20px',
                         display: 'flex', 
                         flexDirection: 'column',
-                        // justifyContent: 'center', 
+                        justifyContent: 'center', 
                         alignItems: 'center', }} >
-                            <Paper elevation={elev} style={{width: '100%', borderRadius: '5px', overflow: 'hidden'}}>
+                            <Paper elevation={10} style={{width: '100%'}}>
                             <Box sx={{position: 'relative', padding: '40px', backgroundColor: '#55e', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
                                     <Typography variant="cardheader" style={{color: 'white'}}>
                                         About Me
                                     </Typography>
                                     <Box sx={{position: 'absolute', top: 0, left: 0, height: 1, width: 1, display: 'flex', opacity: 0.4, backgroundClip: 'text', backgroundImage: 'linear-gradient(0deg, #fff 0%, transparent 100%)', transform: 'rotateX(180deg)', justifyContent: 'center', alignItems: 'center'}}>
                                         <Typography variant="astral" style={{color: 'transparent', transform: 'translate(0px, -0%)',}}>
-                                            <div>About Me</div>
+                                            About Me
                                         </Typography>
                                     </Box>
                                 </Box>
                             </Paper>
-                            <Paper elevation={elev} style={{marginTop: '10px', padding: '10px', borderRadius: '5px', overflow: 'hidden'}}>
+                            <Box sx={{width: 1}}>
+                            <Paper elevation={10} style={{margin: '20px', padding: '10px', borderRadius: '5px', flexGrow: 5, overflow: 'hidden'}}>
                                 <CorneredBox cornerRad='30px' topLeftCol='#4f4' bottomRightCol='#f22' width='20%' height='60%'>
                                 <Box sx={{padding: '100px', backgroundColor: 'white', display: 'flex', justifyContent: 'center'}}>
                                     <Typography variant="cardbody" style={{}}>
-                                        <p style={{margin: '5px', textAlign: 'center'}}>I have a passion for building things while at the same time appreciating new knowledge.
+                                        <p style={{margin: '5px', textAlign: 'center'}}>
+                                        I have a passion for building things while at the same time appreciating new knowledge.
                                         My creations can exist either in software, or have a more a physical manifestation.</p>
 
                                         <p style={{margin: '5px', textAlign: 'center'}}>On my own time, I dragon boat, play the piano, and practice jiu-jitsu.</p>
@@ -171,15 +177,38 @@ export default function PersonalHome() {
                                 </Box>
                                 </CorneredBox>
                             </Paper>
+                            </Box>
+                            <Box sx={{width: 1}}>
+                            <Paper elevation={10} style={{margin: '20px'}}>
+                                <Box sx={{bgcolor: '#e0e', borderRadius: '5px', flexWrap: 'wrap', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                    <Box sx={{padding: '40px', color: 'white', textTransform: 'uppercase', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                    <Typography variant="cardheader" style={{fontSize: '70px', textShadow: '#999 5px 5px 10px'}}>
+                                        Skills
+                                    </Typography>
+                                    </Box>
+                                    <Box sx={{flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                        <SkillsList items={[
+                                                            ['C++/C', 'blueviolet'], 
+                                                            ['Python', 'orange'], 
+                                                            ['Java', 'red'],
+                                                            ['Javascript', '#dd0'],
+                                                            ['SQL', 'lightblue'],
+                                                            ['CSS', 'blue'],
+                                                            ['Rust', '#f33'], 
+                                                        ]} />
+                                    </Box>
+                                </Box>
+                            </Paper>
+                            </Box>
                             {/* Spacer */}
-                            <Box sx={{width: 1, height: '60px'}}></Box>
-                            <Paper elevation={elev} style={{width: '100%', borderRadius: '5px', overflow: 'hidden'}}>
+                            <Box sx={{width: 1}}></Box>
+                            <Paper elevation={10} style={{width: '100%'}}>
                                 <Box sx={{position: 'relative', padding: '40px', backgroundColor: '#f11', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
                                     <Typography variant="cardheader" style={{color: 'white'}}>
-                                        <div className={styles.reflect} txt='Projects'>Projects</div>
+                                        Projects
                                     </Typography>
                                     <Box sx={{position: 'absolute', top: 0, left: 0, height: 1, width: 1, display: 'flex', opacity: 0.5, backgroundClip: 'text', backgroundImage: 'linear-gradient(0deg, #fff 0%, transparent 100%)', transform: 'rotateX(180deg)', justifyContent: 'center', alignItems: 'center'}}>
-                                        <Typography variant="astral" style={{color: 'transparent', transform: 'translate(0px, -10%)',}}>
+                                        <Typography variant="astral" style={{color: 'transparent'}}>
                                             <div>Projects</div>
                                         </Typography>
                                     </Box>

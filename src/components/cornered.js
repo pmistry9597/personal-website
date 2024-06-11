@@ -13,6 +13,6 @@ export default function CorneredBox(props) {
             borderRight: `40px solid ${props.bottomRightCol}`, borderBottom: `40px solid ${props.bottomRightCol}`, borderBottomRightRadius: props.cornerRad,
         }
             }></div>
-        {props.children}
+        <Box sx={{margin: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>{props.children}</Box>
     </Box>
 }
