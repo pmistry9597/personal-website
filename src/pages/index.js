@@ -1,7 +1,6 @@
 import { Box, Button, Container, Grid, Paper, Typography, createTheme } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
-import backIm from '../gr8/0.jpg';
 import profboy from '../profboy.jpg'
 import styles from './index.module.css';
 import Head from "next/head";
@@ -66,16 +65,11 @@ export default function PersonalHome() {
         <ThemeProvider theme={myTheme}>
         <div className={styles.main}>
             <Head>
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-                <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Orbitron:wght@400..900&display=swap" rel="stylesheet" />
-                <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Orbitron:wght@400..900&family=Oswald:wght@200..700&display=swap" rel="stylesheet" />
-                <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Orbitron:wght@400..900&family=Oswald:wght@200..700&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"></link>
-                <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Edu+TAS+Beginner:wght@400..700&family=Orbitron:wght@400..900&family=Oswald:wght@200..700&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"></link>
+                
             </Head>
             <div className={styles.backImage}>
             <Image 
-            src={backIm}
+            src='https://images.pexels.com/photos/1789968/pexels-photo-1789968.jpeg?cs=srgb&dl=pexels-steve-1789968.jpg&fm=jpg&_gl=1*1mjf9an*_ga*MzIzNDMyODgxLjE3MTgxNTUyNzc.*_ga_8JE65Q40S6*MTcxODE1NTI3Ni4xLjEuMTcxODE1NTMxNS4wLjAuMA..'
             width={0}
             height={0}  
             layout={'fill'} 
@@ -146,7 +140,7 @@ export default function PersonalHome() {
                                                     elem.scrollIntoView({behavior: "smooth"});
                                                 }
                                             }} variant="contained" size="large" color="ochre">Find Out More</Button>
-                                            <Button href='resume' variant="outlined" size="large" color="ochre">Resume</Button>
+                                            <Button target='_blank' href='/preet_mistry_resume.pdf' variant="outlined" size="large" color="ochre">Resume</Button>
                                         </div>
                                         <Typography variant="cardheader" sx={{fontSize: '16px', padding: '10px', justifyContent: 'center', alignItems: 'center'}}>
                                             Built with Material UI and Next.js
@@ -157,7 +151,6 @@ export default function PersonalHome() {
                         </Paper>
                     </Box>
             </div>
-            {/* <div style={{zIndex: 2, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0px'}}> */}
             <Container id='content' maxWidth={false} fixed style={{zIndex: 2, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0px'}}>
                 <Box sx={{ background: 'rgba(200,200,200,1)', 
                         // height: '100vh', 
@@ -206,7 +199,7 @@ export default function PersonalHome() {
                                                             ['NodeJS', '#0c5'],
                                                         ]} spacing={2} />
                                         <Typography variant="cardbody" style={{maxHeight: '5px', fontSize: '20px', color: 'white', fontWeight: 'bold', padding: '10px'}}>
-                                            Don't forget to check out my <Link target="_blank" href='resume' style={{}}>resume</Link>!
+                                            Don't forget to check out my <Link target="_blank" href='/preet_mistry_resume.pdf' style={{}}>resume</Link>!
                                         </Typography>
                                     </Box>
                                 </Box>
@@ -290,7 +283,6 @@ export default function PersonalHome() {
             </Container>
             </div>
             </div>
-        {/* </div> */}
         </ThemeProvider>
         )
 }
