@@ -15,7 +15,8 @@
 .contentcontain {
     width: 80%; 
     z-index: 1;
-    padding-top: 20vh;
+    padding-top: 30px;
+    padding-bottom: 30px;
     gap: 10vh;
     display: flex;
     justify-content: center; 

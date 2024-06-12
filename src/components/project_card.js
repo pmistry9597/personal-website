@@ -15,7 +15,7 @@ export default function ProjectCard(props) {
         </Box>
     ) : '';
     return (
-        <Paper elevation={10} sx={{height: 1, maxWidth: 340, borderRadius: '2px', overflow: 'hidden'}}>
+        <Paper elevation={10} sx={{height: 1, maxWidth: 360, borderRadius: '2px', overflow: 'hidden'}}>
         <Card sx={{ bgcolor: '#222', color: 'white', height: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}>
           <CardContent sx={{flexGrow: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
             <Box sx={{marginBottom: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'start'}}>
@@ -32,7 +32,7 @@ export default function ProjectCard(props) {
           </CardContent>
           <Box sx={{width: 1, display: 'flex', flexDirection: 'column-reverse', alignItems: 'start'}}>
             <CardActions sx={{padding: '20px'}}>
-                <Button size="small">View Repo</Button>
+                <Button target='_blank' href={props.viewrepo} size="small">View Repo</Button>
             </CardActions>
           </Box>
         </Card>

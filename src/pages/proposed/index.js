@@ -10,6 +10,8 @@ import SeparatedList from "@/components/separated_list";
 import CorneredBox from "@/components/cornered";
 import SkillsList from "@/components/skills_list";
 import ProjectCard from "@/components/project_card";
+import Link from "next/link";
+import { SocialIcon } from "react-social-icons";
 // https://www.pexels.com/photo/view-of-countryside-under-evening-purple-sky-544268/
 
 const myTheme = createTheme({
@@ -93,7 +95,7 @@ export default function PersonalHome() {
                         // height: '40vh',
                         padding: '30px',
                         // overflow: 'hidden',
-                        margin: '30px',
+                        // margin: '30px',
                         borderRadius: '10px',
                         opacity: 1,
                         },
@@ -132,17 +134,31 @@ export default function PersonalHome() {
                                 <Typography variant="posterbody" style={{width: '70%', gap: '0px', letterSpacing: '1px', border: 'solid pink 0px', borderRadius: '4px', padding: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
                                     I graduated as a computer engineer from the University of Toronto in 2024. Currently, I am doing deep learning research in chemistry at the MSRG group.
                                 </Typography>
-                                <div style={{display: 'flex', gap: '40px', margin: '10px'}}>
-                                    <Button variant="outlined" size="large" color="ochre">Find Out More</Button>
-                                    <Button variant="contained" size="large" color="ochre">Contact Me!</Button>
-                                </div>
+                                    <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                                        <Box sx={{display: 'flex', gap: '10px', margin: '10px'}}>
+                                            <SocialIcon target="_blank" url='https://www.linkedin.com/in/preet-mistry' />
+                                            <SocialIcon target="_blank" url='https://www.github.com/pmistry9597' />
+                                        </Box>
+                                        <div style={{display: 'flex', gap: '10px', margin: '10px'}}>
+                                            <Button onClick={() => {
+                                                let elem = document.getElementById('content');
+                                                if (elem) {
+                                                    elem.scrollIntoView({behavior: "smooth"});
+                                                }
+                                            }} variant="contained" size="large" color="ochre">Find Out More</Button>
+                                            <Button href='resume' variant="outlined" size="large" color="ochre">Resume</Button>
+                                        </div>
+                                        <Typography variant="cardheader" sx={{fontSize: '16px', padding: '10px', justifyContent: 'center', alignItems: 'center'}}>
+                                            Built with Material UI and Next.js
+                                        </Typography>
+                                    </Box>
                                 </Box>
                             </CorneredBox>
                         </Paper>
                     </Box>
             </div>
-            <div style={{zIndex: 2, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0px'}}>
-            <Container maxWidth={false} fixed style={{zIndex: 2, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0px'}}>
+            {/* <div style={{zIndex: 2, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0px'}}> */}
+            <Container id='content' maxWidth={false} fixed style={{zIndex: 2, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0px'}}>
                 <Box sx={{ background: 'rgba(200,200,200,1)', 
                         // height: '100vh', 
                         width: 1,
@@ -157,7 +173,7 @@ export default function PersonalHome() {
                                     <Typography variant="cardheader" style={{color: 'white'}}>
                                         About Me
                                     </Typography>
-                                    <Box sx={{position: 'absolute', top: 0, left: 0, height: 1, width: 1, display: 'flex', opacity: 0.4, backgroundClip: 'text', backgroundImage: 'linear-gradient(0deg, #fff 0%, transparent 100%)', transform: 'rotateX(180deg)', justifyContent: 'center', alignItems: 'center'}}>
+                                    <Box sx={{position: 'absolute', top: 0, left: 0, height: 1, width: 1, display: 'flex', opacity: 0.5, backgroundClip: 'text', backgroundImage: 'linear-gradient(0deg, #fff 0%, transparent 100%)', transform: 'rotateX(180deg)', justifyContent: 'center', alignItems: 'center'}}>
                                         <Typography variant="astral" style={{color: 'transparent', transform: 'translate(0px, -0%)',}}>
                                             <div>About Me</div>
                                         </Typography>
@@ -190,7 +206,7 @@ export default function PersonalHome() {
                                                             ['NodeJS', '#0c5'],
                                                         ]} spacing={2} />
                                         <Typography variant="cardbody" style={{maxHeight: '5px', fontSize: '20px', color: 'white', fontWeight: 'bold', padding: '10px'}}>
-                                            Don't forget to check out my resume!
+                                            Don't forget to check out my <Link target="_blank" href='resume' style={{}}>resume</Link>!
                                         </Typography>
                                     </Box>
                                 </Box>
@@ -218,7 +234,7 @@ export default function PersonalHome() {
                                     <Typography variant="cardheader" style={{color: 'white'}}>
                                         Projects
                                     </Typography>
-                                    <Box sx={{position: 'absolute', top: 0, left: 0, height: 1, width: 1, display: 'flex', opacity: 0.5, backgroundClip: 'text', backgroundImage: 'linear-gradient(0deg, #fff 0%, transparent 100%)', transform: 'rotateX(180deg)', justifyContent: 'center', alignItems: 'center'}}>
+                                    <Box sx={{position: 'absolute', top: 0, left: 0, height: 1, width: 1, display: 'flex', opacity: 0.6, backgroundClip: 'text', backgroundImage: 'linear-gradient(0deg, #fff 0%, transparent 100%)', transform: 'rotateX(180deg)', justifyContent: 'center', alignItems: 'center'}}>
                                         <Typography variant="astral" style={{color: 'transparent'}}>
                                             <div>Projects</div>
                                         </Typography>
@@ -229,12 +245,13 @@ export default function PersonalHome() {
                             <Paper elevation={10} style={{margin: '20px', padding: '10px', borderRadius: '5px', flexGrow: 5, overflow: 'hidden'}}>
                                 <Box sx={{padding: '40px', backgroundColor: 'white', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
                                     <Box sx={{width: 1}}>
-                                        <Grid container spacing={3} direction='row' justifyContent='start'>
+                                        <Grid container spacing={10} direction='row' justifyContent='start'>
                                             <Grid item>
                                                 <ProjectCard title='Climate Hack 2022' body='
                                                     My submission for Climate Hack 2022. I managed to placed 14th out of over 130 participants!
                                                 '
                                                 skills={[['Python', 'orange'],['Deep Learning', '#f57'],['PyTorch', '#f63'],]} 
+                                                viewrepo='https://github.com/pmistry9597/Climate-Hack-2022'
                                                 />
                                             </Grid>
                                             <Grid item>
@@ -242,6 +259,7 @@ export default function PersonalHome() {
                                                     A demonstration of some prominent reinforcement learning algorithms.
                                                 '
                                                 skills={[['Python', 'orange'],['Deep Learning', '#f57'],['PyTorch', '#f63'],]}  
+                                                viewrepo='https://github.com/pmistry9597/Reinforcement-Learning-Algo-Demo'
                                                 />
                                             </Grid>
                                             <Grid item>
@@ -249,6 +267,7 @@ export default function PersonalHome() {
                                                     Space game, allows you to learn about the solar system, gravity, and orbits! 
                                                 '
                                                 skills={[['Javascript', '#dd0']]}
+                                                viewrepo='https://github.com/pmistry9597/Space-Explorer'
                                                 />
                                             </Grid>
                                             <Grid item>
@@ -256,12 +275,13 @@ export default function PersonalHome() {
                                                     Circuit game with lessons and a simulator.
                                                 '
                                                 skills={[['Javascript', '#dd0']]}
+                                                viewrepo='https://github.com/pmistry9597/Circuit-Builder'
                                                 />
                                             </Grid>
                                         </Grid>
                                     </Box>
                                     <Typography variant="cardbody" style={{maxHeight: '5px', fontSize: '30px', padding: '30px'}}>
-                                        Many more can be found on my GitHub!
+                                        Many more can be found on my <Link target="_blank" href='https://github.com/pmistry9597' style={{}}>GitHub!</Link>
                                     </Typography>
                                 </Box>
                             </Paper>
@@ -270,7 +290,7 @@ export default function PersonalHome() {
             </Container>
             </div>
             </div>
-        </div>
+        {/* </div> */}
         </ThemeProvider>
         )
 }
