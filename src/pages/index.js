@@ -9,8 +9,6 @@ import SkillsList from "@/components/skills_list";
 import ProjectCard from "@/components/project_card";
 import Link from "next/link";
 import { SocialIcon } from "react-social-icons";
-import { Image } from "@mui/icons-material";
-// https://www.pexels.com/photo/view-of-countryside-under-evening-purple-sky-544268/
 
 const myTheme = createTheme({
     typography: {
@@ -77,7 +75,7 @@ export default function PersonalHome() {
             </Box>
             </div>
             
-            <div className={styles.contentcontain}>
+            <Box className={styles.contentcontain} sx={{width: {md: '80%', sm: '95%'}}}>
             <div onMouseOver={() => {setElev(20)}} onMouseOut={() => {setElev(5)}} style={{width: '100%'}}>
                 <Box
                     sx={{
@@ -98,9 +96,10 @@ export default function PersonalHome() {
                         <Paper elevation={elev}>
                             <CorneredBox cornerRad='30px' topLeftCol='#0afce4' bottomRightCol='#fc0fe4' width='250px' height='30%'>
                                 <Box sx={{margin: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                <Typography variant="posterheader" style={{textTransform: 'uppercase', textShadow: '#992 1px 0 10px', letterSpacing: '2px', wordSpacing: '2px'}}>
+                                <Typography variant="posterheader" style={{textTransform: 'uppercase', textShadow: '#992 1px 0 10px', textAlign: 'center', letterSpacing: '2px', wordSpacing: '2px'}}>
                                     I am Preet Mistry
                                 </Typography>
+                                <Box>
                                 <Typography variant="subheader" style={{textTransform: 'uppercase'}}>
                                     <SeparatedList 
                                         items={
@@ -108,12 +107,13 @@ export default function PersonalHome() {
                                         }
                                     />
                                 </Typography>
+                                </Box>
                                 <div style={
                                     {
-                                        // margin: '20px',
-                                        width: '300px', 
-                                        height: '300px',
-                                        minHeight: '300px', 
+                                        width: '15vw', 
+                                        height: '15vw',
+                                        minHeight: '200px',
+                                        minWidth: '200px', 
                                         borderRadius: '50%', 
                                         overflow: 'hidden'
                                     }
@@ -152,22 +152,22 @@ export default function PersonalHome() {
                         </Paper>
                     </Box>
             </div>
-            <Container id='content' maxWidth={false} fixed style={{zIndex: 2, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0px'}}>
+            <Container disableGutters id='content' maxWidth={false} sx={{zIndex: 2, padding: '0px', margin: '0px', width: 1, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <Box sx={{ background: 'rgba(200,200,200,1)', 
                         // height: '100vh', 
                         width: 1,
-                        borderRadius: '5px', 
+                        borderRadius: '10px', 
                         // padding: '20px',
                         display: 'flex', 
                         flexDirection: 'column',
                         justifyContent: 'center', 
                         alignItems: 'center', }} >
-                            <Paper elevation={10} style={{width: '100%'}}>
-                            <Box sx={{position: 'relative', padding: '40px', backgroundColor: '#55e', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
+                            <Paper elevation={10} style={{width: '100%', borderRadius: '5px'}}>
+                            <Box sx={{position: 'relative', borderRadius: '5px', padding: '40px', backgroundColor: '#55e', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
                                     <Typography variant="cardheader" style={{color: 'white'}}>
                                         About Me
                                     </Typography>
-                                    <Box sx={{position: 'absolute', top: 0, left: 0, height: 1, width: 1, display: 'flex', opacity: 0.5, backgroundClip: 'text', backgroundImage: 'linear-gradient(0deg, #fff 0%, transparent 100%)', transform: 'rotateX(180deg)', justifyContent: 'center', alignItems: 'center'}}>
+                                    <Box sx={{position: 'absolute', top: 0, left: 0, right: 0, marginLeft: 'auto', marginRight: 'auto', height: 1, width: 1, display: 'flex', opacity: 0.5, backgroundClip: 'text', backgroundImage: 'linear-gradient(0deg, #fff 0%, transparent 100%)', transform: 'rotateX(180deg)', justifyContent: 'center', alignItems: 'center'}}>
                                         <Typography variant="astral" style={{color: 'transparent', transform: 'translate(0px, -0%)',}}>
                                             <div>About Me</div>
                                         </Typography>
@@ -288,7 +288,7 @@ export default function PersonalHome() {
                             </Box>
                 </Box>
             </Container>
-            </div>
+            </Box>
             </div>
         </ThemeProvider>
         )
