@@ -63,17 +63,17 @@ export default function PersonalHome() {
         <div className={styles.main}>
             <Head>
             </Head>
-            <div className={styles.backImage}>
-            <Box sx={{width: 1, height: 1}}>
-                <Box
-                    component="img"
-                    sx={{
-                        height: 1, width: 1, objectFit: 'cover'
-                    }}
-                    src='https://images.pexels.com/photos/1789968/pexels-photo-1789968.jpeg?cs=srgb&dl=pexels-steve-1789968.jpg&fm=jpg&_gl=1*1mjf9an*_ga*MzIzNDMyODgxLjE3MTgxNTUyNzc.*_ga_8JE65Q40S6*MTcxODE1NTI3Ni4xLjEuMTcxODE1NTMxNS4wLjAuMA..'
-                    />
+            <Box className={styles.backImage}>
+                <Box sx={{width: 1, height: 1}}>
+                    <Box
+                        component="img"
+                        sx={{
+                            height: 1, width: 1, objectFit: 'cover'
+                        }}
+                        src='https://images.pexels.com/photos/1789968/pexels-photo-1789968.jpeg?cs=srgb&dl=pexels-steve-1789968.jpg&fm=jpg&_gl=1*1mjf9an*_ga*MzIzNDMyODgxLjE3MTgxNTUyNzc.*_ga_8JE65Q40S6*MTcxODE1NTI3Ni4xLjEuMTcxODE1NTMxNS4wLjAuMA..'
+                        />
+                </Box>
             </Box>
-            </div>
             
             <Box className={styles.contentcontain} sx={{width: {md: '80%', sm: '95%'}}}>
             <div onMouseOver={() => {setElev(20)}} onMouseOut={() => {setElev(5)}} style={{width: '100%'}}>
@@ -164,13 +164,15 @@ export default function PersonalHome() {
                         alignItems: 'center', }} >
                             <Paper elevation={10} style={{width: '100%', borderRadius: '5px'}}>
                             <Box sx={{position: 'relative', borderRadius: '5px', padding: '40px', backgroundColor: '#55e', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
-                                    <Typography variant="cardheader" style={{color: 'white'}}>
+                                    <Typography variant="cardheader" style={{color: 'white', textWrap: 'nowrap'}}>
                                         About Me
                                     </Typography>
+                                    <Box sx={{overflow: 'hidden', position: 'absolute', width: 1, height: 1}}>
                                     <Box sx={{position: 'absolute', top: 0, left: 0, right: 0, marginLeft: 'auto', marginRight: 'auto', height: 1, width: 1, display: 'flex', opacity: 0.5, backgroundClip: 'text', backgroundImage: 'linear-gradient(0deg, #fff 0%, transparent 100%)', transform: 'rotateX(180deg)', justifyContent: 'center', alignItems: 'center'}}>
-                                        <Typography variant="astral" style={{color: 'transparent', transform: 'translate(0px, -0%)',}}>
-                                            <div>About Me</div>
+                                        <Typography variant="astral" style={{color: 'transparent', textWrap: 'nowrap', transform: 'translate(0px, -0%)',}}>
+                                            About Me
                                         </Typography>
+                                    </Box>
                                     </Box>
                                 </Box>
                             </Paper>
