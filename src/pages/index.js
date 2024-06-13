@@ -1,7 +1,5 @@
 import { Box, Button, Container, Grid, Paper, Typography, createTheme } from "@mui/material";
-import Image from "next/image";
 import { useState } from "react";
-import profboy from '../profboy.jpg'
 import styles from './index.module.css';
 import Head from "next/head";
 import { ThemeProvider } from "@emotion/react";
@@ -11,6 +9,7 @@ import SkillsList from "@/components/skills_list";
 import ProjectCard from "@/components/project_card";
 import Link from "next/link";
 import { SocialIcon } from "react-social-icons";
+import { Image } from "@mui/icons-material";
 // https://www.pexels.com/photo/view-of-countryside-under-evening-purple-sky-544268/
 
 const myTheme = createTheme({
@@ -34,7 +33,7 @@ const myTheme = createTheme({
         },
         cardheader: {
             fontFamily: '"Orbitron", sans-serif',
-            fontSize: '80px',
+            fontSize: '5em',
         },
         astral: {
             fontFamily: '"Orbitron", sans-serif',
@@ -65,16 +64,17 @@ export default function PersonalHome() {
         <ThemeProvider theme={myTheme}>
         <div className={styles.main}>
             <Head>
-                
             </Head>
             <div className={styles.backImage}>
-            <Image 
-            src='https://images.pexels.com/photos/1789968/pexels-photo-1789968.jpeg?cs=srgb&dl=pexels-steve-1789968.jpg&fm=jpg&_gl=1*1mjf9an*_ga*MzIzNDMyODgxLjE3MTgxNTUyNzc.*_ga_8JE65Q40S6*MTcxODE1NTI3Ni4xLjEuMTcxODE1NTMxNS4wLjAuMA..'
-            width={0}
-            height={0}  
-            layout={'fill'} 
-            // objectFit={'contain'}
-            />
+            <Box sx={{width: 1, height: 1}}>
+                <Box
+                    component="img"
+                    sx={{
+                        height: 1, width: 1, objectFit: 'cover'
+                    }}
+                    src='https://images.pexels.com/photos/1789968/pexels-photo-1789968.jpeg?cs=srgb&dl=pexels-steve-1789968.jpg&fm=jpg&_gl=1*1mjf9an*_ga*MzIzNDMyODgxLjE3MTgxNTUyNzc.*_ga_8JE65Q40S6*MTcxODE1NTI3Ni4xLjEuMTcxODE1NTMxNS4wLjAuMA..'
+                    />
+            </Box>
             </div>
             
             <div className={styles.contentcontain}>
@@ -118,12 +118,13 @@ export default function PersonalHome() {
                                         overflow: 'hidden'
                                     }
                                     }>
-                                <Image 
-                                    src={profboy}
-                                    width={0}
-                                    height={0}
-                                    style={{ width: '100%', height: '100%' }} // optional
-                                />
+                                    <Box
+                                        component="img"
+                                        sx={{
+                                            height: 1, width: 1,
+                                        }}
+                                        src="/profboy.jpg"
+                                        />
                                 </div>
                                 <Typography variant="posterbody" style={{width: '70%', gap: '0px', letterSpacing: '1px', border: 'solid pink 0px', borderRadius: '4px', padding: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
                                     I graduated as a computer engineer from the University of Toronto in 2024. Currently, I am doing deep learning research in chemistry at the MSRG group.
@@ -176,12 +177,12 @@ export default function PersonalHome() {
                             <Box sx={{width: 1}}>
                             <Paper elevation={10} style={{margin: '20px'}}>
                                 <Box sx={{bgcolor: '#e0e', borderRadius: '5px', flexWrap: 'wrap', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
-                                    <Box sx={{padding: '40px', color: 'white', textTransform: 'uppercase', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                                    <Typography variant="cardheader" style={{fontSize: '70px', textShadow: '#999 5px 5px 10px'}}>
-                                        Skills
-                                    </Typography>
+                                    <Box sx={{margin: '20px', color: 'white', textTransform: 'uppercase', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                        <Typography variant="cardheader" style={{fontSize: '70px', textShadow: '#999 5px 5px 10px'}}>
+                                            Skills
+                                        </Typography>
                                     </Box>
-                                    <Box sx={{maxWidth: 0.7, padding: '10px',fontSize: '20px', flexWrap: 'wrap', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                                    <Box sx={{maxWidth: 0.6, margin: '20px', fontSize: '20px', flexWrap: 'wrap', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                                         <SkillsList items={[
                                                             ['C++/C', 'blueviolet'], 
                                                             ['Python', 'orange'], 
@@ -198,9 +199,11 @@ export default function PersonalHome() {
                                                             ['Amazon Web Services (AWS)', 'orange'],
                                                             ['NodeJS', '#0c5'],
                                                         ]} spacing={2} />
-                                        <Typography variant="cardbody" style={{maxHeight: '5px', fontSize: '20px', color: 'white', fontWeight: 'bold', padding: '10px'}}>
+                                        <Box sx={{padding: '10px'}}>
+                                        <Typography variant="cardbody" style={{maxHeight: '5px', fontSize: '20px', color: 'white', fontWeight: 'bold',}}>
                                             Don't forget to check out my <Link target="_blank" href='/preet_mistry_resume.pdf' style={{}}>resume</Link>!
                                         </Typography>
+                                        </Box>
                                     </Box>
                                 </Box>
                             </Paper>
@@ -224,9 +227,11 @@ export default function PersonalHome() {
                             <Box sx={{width: 1}}></Box>
                             <Paper elevation={10} style={{width: '100%'}}>
                                 <Box sx={{position: 'relative', padding: '40px', backgroundColor: '#f11', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
-                                    <Typography variant="cardheader" style={{color: 'white'}}>
-                                        Projects
-                                    </Typography>
+                                    <Box>
+                                        <Typography variant="cardheader" style={{color: 'white'}}>
+                                            Projects
+                                        </Typography>
+                                    </Box>
                                     <Box sx={{position: 'absolute', top: 0, left: 0, height: 1, width: 1, display: 'flex', opacity: 0.6, backgroundClip: 'text', backgroundImage: 'linear-gradient(0deg, #fff 0%, transparent 100%)', transform: 'rotateX(180deg)', justifyContent: 'center', alignItems: 'center'}}>
                                         <Typography variant="astral" style={{color: 'transparent'}}>
                                             <div>Projects</div>
@@ -273,9 +278,11 @@ export default function PersonalHome() {
                                             </Grid>
                                         </Grid>
                                     </Box>
-                                    <Typography variant="cardbody" style={{maxHeight: '5px', fontSize: '30px', padding: '30px'}}>
-                                        Many more can be found on my <Link target="_blank" href='https://github.com/pmistry9597' style={{}}>GitHub!</Link>
-                                    </Typography>
+                                    <Box sx={{padding: '10px'}}>
+                                        <Typography variant="cardbody" style={{maxHeight: '5px', fontSize: '30px', padding: '30px'}}>
+                                            Many more can be found on my <Link target="_blank" href='https://github.com/pmistry9597' style={{}}>GitHub!</Link>
+                                        </Typography>
+                                    </Box>
                                 </Box>
                             </Paper>
                             </Box>

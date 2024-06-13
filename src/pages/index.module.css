@@ -27,7 +27,8 @@
 .backImage {
     position: fixed;
     top: 0px;
-    background-color: red;
+    left: 0px;
+    background-color: blue;
     z-index: 1;
     flex-grow: 1;
     flex-wrap: wrap;
