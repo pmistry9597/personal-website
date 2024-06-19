@@ -121,9 +121,9 @@ export default function PersonalHome() {
                                     <Box
                                         component="img"
                                         sx={{
-                                            height: 1, width: 1,
+                                            height: 1, width: 1, objectFit: 'cover'
                                         }}
-                                        src="/profboy.jpg"
+                                        src="/gradphoto.jpg"
                                         />
                                 </div>
                                 <Typography variant="posterbody" style={{width: '70%', gap: '0px', letterSpacing: '1px', border: 'solid pink 0px', borderRadius: '4px', padding: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
