@@ -247,6 +247,14 @@ export default function PersonalHome() {
                                     <Box sx={{width: 1}}>
                                         <Grid container spacing={10} direction='row' justifyContent='start'>
                                             <Grid item>
+                                                <ProjectCard title='Ray Tracer in Rust' body='
+                                                    Generate extremely realistic renders of 3D models using Monte-Carlo unidirectional path tracing and various acceleration structures, all in Rust!
+                                                '
+                                                skills={[['Rust', '#f33'],['Computer Graphics', '#33cc00'],['Optimization', '#50f'],]} 
+                                                viewrepo='https://github.com/pmistry9597/Ray_Trace-Rust'
+                                                />
+                                            </Grid>
+                                            <Grid item>
                                                 <ProjectCard title='Climate Hack 2022' body='
                                                     My submission for Climate Hack 2022. I managed to placed 14th out of over 130 participants!
                                                 '
