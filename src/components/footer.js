@@ -15,7 +15,7 @@ export default function Footer() {
     >
       <Box sx={{ px: 4 }}>
         <Typography sx={{ textAlign: 'center', mb: 1 }}>
-          © {new Date().getFullYear()} Preet Mistry. Built with Next.js.
+          © {new Date().getFullYear()} Preet Mistry. Built with Next.js + MUI.
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
           <LinkComponent href="https://github.com/pmistry9597" target="_blank" rel="noopener">
@@ -24,7 +24,7 @@ export default function Footer() {
             </Link>
           </LinkComponent>
           <LinkComponent href="/preet_mistry_resume.pdf" target="_blank" rel="noopener">
-            <Link sx={{ color: 'inherit', textDecoration: 'none', '&:hover': { color: '#22d3ee' } }}>
+            <Link style={{ color: 'inherit', textDecoration: 'none', '&:hover': { color: '#22d3ee' } }}>
               Resume
             </Link>
           </LinkComponent>

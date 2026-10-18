@@ -59,7 +59,7 @@ export default function About() {
                                 Focused on systems programming, computer graphics, and machine learning.
                                 Currently exploring Rust, ray tracing, and deep learning.
 
-                                This portfolio is built with Next.js, MUI, and static export — designed to be
+                                This portfolio is built with Next.js + MUI — designed to be
                                 lightweight, fast, and easy to maintain.
                             </Typography>
                         </Paper>
@@ -98,7 +98,12 @@ export default function About() {
                                         color: '#22d3ee',
                                         textDecoration: 'none',
                                         fontSize: '0.95rem',
-                                        '&:hover': { textDecoration: 'underline' },
+                                        fontWeight: 400,
+                                        fontFamily: '"Oswald", sans-serif',
+                                        '&:hover': {
+                                            color: '#d946ef',
+                                            textDecoration: 'none',
+                                        },
                                     }}
                                 >
                                     GitHub
@@ -107,14 +112,19 @@ export default function About() {
                                     href="/preet_mistry_resume.pdf"
                                     target="_blank"
                                     rel="noopener"
-                                    sx={{
+                                    style={{
                                         display: 'inline-flex',
                                         alignItems: 'center',
                                         gap: 1,
                                         color: '#e8eaf2',
                                         textDecoration: 'none',
                                         fontSize: '0.95rem',
-                                        '&:hover': { color: '#22d3ee', textDecoration: 'underline' },
+                                        fontWeight: 400,
+                                        fontFamily: '"Oswald", sans-serif',
+                                        '&:hover': {
+                                            color: '#22d3ee',
+                                            textDecoration: 'none',
+                                        },
                                     }}
                                 >
                                     Resume

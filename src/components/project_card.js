@@ -102,19 +102,24 @@ export default function ProjectCard({ project }) {
                             href={project.links.repo}
                             target="_blank"
                             rel="noopener"
-                            sx={{
+                            style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: 1,
-                                color: '#94a3b8',
+                                color: '#1976d2',
                                 textDecoration: 'none',
                                 fontSize: '0.8rem',
-                                fontFamily: '"Oswald", sans-serif',
+                                fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
                                 fontWeight: 600,
-                                '&:hover': { color: '#22d3ee' },
+                                textTransform: "uppercase",
+                                letterSpacing: "1px",
+                                '&:hover': {
+                                    color: '#d946ef',
+                                    textDecoration: 'none',
+                                },
                             }}
                         >
-                            ↗ Repo
+                            ↗ REPO
                         </Link>
                     </Box>
                 )}

@@ -26,7 +26,7 @@ export default function Nav({ pathname }) {
               cursor: 'pointer',
             }}
           >
-            P.MISTRY
+            PREET
           </Typography>
         </LinkComponent>
         <Box sx={{ flexGrow: 1 }} />

@@ -168,18 +168,23 @@ export default function ProjectDetail({ project }) {
                                                     href={link.url}
                                                     target="_blank"
                                                     rel="noopener"
-                                                    sx={{
+                                                    style={{
                                                         display: "inline-flex",
                                                         alignItems: "center",
                                                         gap: 1,
-                                                        color: "#22d3ee",
+                                                        color: "#1976d2",
                                                         textDecoration: "none",
                                                         fontSize: "0.9rem",
                                                         fontWeight: 600,
-                                                        "&:hover": { textDecoration: "underline" },
+                                                        textTransform: "uppercase",
+                                                        letterSpacing: "1px",
+                                                        "&:hover": {
+                                                            color: "#d946ef",
+                                                            textDecoration: "none",
+                                                        },
                                                     }}
                                                 >
-                                                    {link.label}
+                                                    ↗ {link.label}
                                                 </Link>
                                             ))}
                                         </Box>
