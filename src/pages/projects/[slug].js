@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Typography, Button, Chip, Paper } from "@mui/material";
+import { Box, Container, Grid, Typography, Chip, Paper } from "@mui/material";
 import Head from "next/head";
 import Link from "next/link";
 import { projects } from "@/data/projects";
@@ -26,19 +26,27 @@ export default function ProjectDetail({ project }) {
                         </Typography>
                         <Box sx={{ mt: 2 }}>
                             <Link href="/projects" passHref legacyBehavior>
-                                <Button
-                                    variant="outlined"
+                                <Typography
                                     sx={{
                                         border: "1px solid rgba(34, 211, 238, 0.4)",
                                         color: "#22d3ee",
                                         textTransform: "none",
                                         fontWeight: 600,
+                                        fontFamily: "\"Oswald\", sans-serif",
+                                        fontSize: "0.85rem",
                                         px: 4,
                                         py: 1.5,
+                                        textAlign: "center",
+                                        borderRadius: 2,
+                                        cursor: "pointer",
+                                        "&:hover": {
+                                            background: "rgba(34, 211, 238, 0.1)",
+                                            borderColor: "#22d3ee",
+                                        },
                                     }}
                                 >
                                     Back to Projects
-                                </Button>
+                                </Typography>
                             </Link>
                         </Box>
                     </Box>
@@ -185,15 +193,19 @@ export default function ProjectDetail({ project }) {
                 {/* Back link */}
                 <Box sx={{ mt: 8, mb: 4, textAlign: "center" }}>
                     <Link href="/projects" passHref legacyBehavior>
-                        <Button
-                            variant="outlined"
+                        <Typography
                             sx={{
                                 border: "1px solid rgba(34, 211, 238, 0.4)",
                                 color: "#22d3ee",
                                 textTransform: "none",
                                 fontWeight: 600,
+                                fontFamily: "\"Oswald\", sans-serif",
+                                fontSize: "0.85rem",
                                 px: 4,
                                 py: 1.5,
+                                textAlign: "center",
+                                borderRadius: 2,
+                                cursor: "pointer",
                                 "&:hover": {
                                     background: "rgba(34, 211, 238, 0.1)",
                                     borderColor: "#22d3ee",
@@ -201,7 +213,7 @@ export default function ProjectDetail({ project }) {
                             }}
                         >
                             Back to Projects
-                        </Button>
+                        </Typography>
                     </Link>
                 </Box>
             </Container>

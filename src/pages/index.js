@@ -1,7 +1,7 @@
-import { Box, Container, Grid, Typography, Button } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
 import ProjectCard from "@/components/project_card";
 import { projects } from "@/data/projects";
 
@@ -70,15 +70,19 @@ export default function Home() {
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
                         <Link href="/projects" passHref legacyBehavior>
-                            <Button
-                                variant="outlined"
+                            <Typography
                                 sx={{
                                     border: '1px solid #22d3ee',
                                     color: '#22d3ee',
                                     textTransform: 'none',
                                     fontWeight: 600,
+                                    fontFamily: '"Oswald", sans-serif',
+                                    fontSize: '0.85rem',
                                     px: 3,
                                     py: 1.5,
+                                    textAlign: 'center',
+                                    borderRadius: 2,
+                                    cursor: 'pointer',
                                     '&:hover': {
                                         background: '#22d3ee',
                                         color: '#0a0e17',
@@ -86,7 +90,7 @@ export default function Home() {
                                 }}
                             >
                                 View Projects
-                            </Button>
+                            </Typography>
                         </Link>
                         <Link
                             href="/preet_mistry_resume.pdf"
@@ -95,15 +99,19 @@ export default function Home() {
                             passHref
                             legacyBehavior
                         >
-                            <Button
-                                variant="outlined"
+                            <Typography
                                 sx={{
                                     border: '1px solid rgba(148, 163, 184, 0.4)',
                                     color: '#e8eaf2',
                                     textTransform: 'none',
                                     fontWeight: 600,
+                                    fontFamily: '"Oswald", sans-serif',
+                                    fontSize: '0.85rem',
                                     px: 3,
                                     py: 1.5,
+                                    textAlign: 'center',
+                                    borderRadius: 2,
+                                    cursor: 'pointer',
                                     '&:hover': {
                                         borderColor: '#22d3ee',
                                         color: '#22d3ee',
@@ -111,7 +119,7 @@ export default function Home() {
                                 }}
                             >
                                 Resume
-                            </Button>
+                            </Typography>
                         </Link>
                     </Box>
                 </Box>
@@ -140,15 +148,19 @@ export default function Home() {
                     </Grid>
                     <Box sx={{ mt: 6, textAlign: 'center' }}>
                         <Link href="/projects" passHref legacyBehavior>
-                            <Button
-                                variant="outlined"
+                            <Typography
                                 sx={{
                                     border: '1px solid rgba(34, 211, 238, 0.4)',
                                     color: '#22d3ee',
                                     textTransform: 'none',
                                     fontWeight: 600,
+                                    fontFamily: '"Oswald", sans-serif',
+                                    fontSize: '0.85rem',
                                     px: 4,
                                     py: 1.5,
+                                    textAlign: 'center',
+                                    borderRadius: 2,
+                                    cursor: 'pointer',
                                     '&:hover': {
                                         background: 'rgba(34, 211, 238, 0.1)',
                                         borderColor: '#22d3ee',
@@ -156,7 +168,7 @@ export default function Home() {
                                 }}
                             >
                                 See All Projects
-                            </Button>
+                            </Typography>
                         </Link>
                     </Box>
                 </Box>

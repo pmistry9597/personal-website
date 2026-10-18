@@ -1,4 +1,4 @@
-import { Box, Toolbar, Typography, Link, Button } from '@mui/material';
+import { Box, Toolbar, Typography } from '@mui/material';
 import LinkComponent from 'next/link';
 
 export default function Nav({ pathname }) {
@@ -14,8 +14,8 @@ export default function Nav({ pathname }) {
       }}
     >
       <Toolbar sx={{ px: 4 }}>
-        <LinkComponent href="/">
-          <Link
+        <LinkComponent href="/" passHref legacyBehavior>
+          <Typography
             sx={{
               color: 'inherit',
               textDecoration: 'none',
@@ -23,30 +23,34 @@ export default function Nav({ pathname }) {
               fontWeight: 700,
               fontSize: '1.25rem',
               letterSpacing: '0.1em',
+              cursor: 'pointer',
             }}
           >
             P.MISTRY
-          </Link>
+          </Typography>
         </LinkComponent>
         <Box sx={{ flexGrow: 1 }} />
         {['/', '/projects', '/about'].map((route) => (
-          <LinkComponent key={route} href={route}>
-            <Button
-              size="small"
+          <LinkComponent key={route} href={route} passHref legacyBehavior>
+            <Typography
               sx={{
                 color: pathname === route ? '#22d3ee' : '#94a3b8',
                 textTransform: 'uppercase',
                 fontSize: '0.85rem',
                 fontWeight: 500,
                 border: `1px solid ${pathname === route ? 'rgba(34, 211, 238, 0.5)' : 'rgba(148, 163, 184, 0.3)'}`,
+                borderRadius: 2,
+                px: 1.5,
+                py: 0.5,
                 ml: 1,
+                cursor: 'pointer',
                 '&:hover': {
                   borderColor: 'rgba(34, 211, 238, 0.6)',
                 },
               }}
             >
               {route === '/' ? 'Home' : route === '/projects' ? 'Projects' : 'About'}
-            </Button>
+            </Typography>
           </LinkComponent>
         ))}
       </Toolbar>

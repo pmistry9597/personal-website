@@ -1,6 +1,5 @@
 import { Box, Container, Grid, Typography, Button, Chip } from "@mui/material";
 import Head from "next/head";
-import Link from "next/link";
 import ProjectCard from "@/components/project_card";
 import { projects } from "@/data/projects";
 

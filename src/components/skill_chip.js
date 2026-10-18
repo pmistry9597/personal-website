@@ -17,6 +17,7 @@ export default function SkillChip({ item }) {
         fontWeight: 600,
         textTransform: 'uppercase',
         letterSpacing: '0.05em',
+        fontFamily: '"Orbitron", sans-serif',
       }}
     >
       {name}

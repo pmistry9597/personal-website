@@ -1,6 +1,6 @@
-import { Box, Button, Card, CardContent, Typography } from "@mui/material";
-import SkillChip from "./skill_chip";
+import { Box, Card, CardContent, Typography } from "@mui/material";
 import Link from "next/link";
+import SkillChip from "./skill_chip";
 
 export default function ProjectCard({ project }) {
     return (
@@ -73,7 +73,7 @@ export default function ProjectCard({ project }) {
             </CardContent>
             <Box sx={{ p: 3, borderTop: '1px solid rgba(35, 48, 74, 0.4)' }}>
                 <Link href={`/projects/${project.slug}`} passHref legacyBehavior>
-                    <Button
+                    <Typography
                         sx={{
                             width: '100%',
                             border: '1px solid rgba(34, 211, 238, 0.4)',
@@ -81,6 +81,12 @@ export default function ProjectCard({ project }) {
                             textTransform: 'none',
                             fontSize: '0.85rem',
                             fontWeight: 600,
+                            fontFamily: '"Oswald", sans-serif',
+                            textAlign: 'center',
+                            borderRadius: 2,
+                            px: 3,
+                            py: 1.5,
+                            cursor: 'pointer',
                             '&:hover': {
                                 background: 'rgba(34, 211, 238, 0.1)',
                                 borderColor: '#22d3ee',
@@ -88,7 +94,7 @@ export default function ProjectCard({ project }) {
                         }}
                     >
                         Open Project
-                    </Button>
+                    </Typography>
                 </Link>
                 {project.links.repo && (
                     <Box sx={{ mt: 1.5 }}>
@@ -103,6 +109,8 @@ export default function ProjectCard({ project }) {
                                 color: '#94a3b8',
                                 textDecoration: 'none',
                                 fontSize: '0.8rem',
+                                fontFamily: '"Oswald", sans-serif',
+                                fontWeight: 600,
                                 '&:hover': { color: '#22d3ee' },
                             }}
                         >
