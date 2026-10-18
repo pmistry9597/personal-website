@@ -1,41 +1,116 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Paper, Typography } from "@mui/material";
-import SkillsList from "./skills_list";
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
+import SkillChip from "./skill_chip";
+import Link from "next/link";
 
-export default function ProjectCard(props) {
-    const skilllist = props.skills ? (
-        <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '10px'}}>
-            <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <Typography style={{fontSize: '15px', textTransform: 'uppercase', fontWeight: 'bold'}}>
-                Skills Used:
-            </Typography>
-            </Box>
-            <Box sx={{marginLeft: '10px', justifyContent: 'space-evenly', fontSize: '15px'}}>
-                <SkillsList items={props.skills} spacing={1} />
-            </Box>
-        </Box>
-    ) : '';
+export default function ProjectCard({ project }) {
     return (
-        <Paper elevation={10} sx={{height: 1, maxWidth: 360, borderRadius: '2px', overflow: 'hidden'}}>
-        <Card sx={{ bgcolor: '#222', color: 'white', height: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}>
-          <CardContent sx={{flexGrow: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-            <Box sx={{marginBottom: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'start'}}>
-                <Typography variant="posterbody" style={{fontSize: '40px'}}>
-                {props.title}
+        <Card
+            sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                borderRadius: '12px',
+                border: '1px solid rgba(35, 48, 74, 0.6)',
+                background: 'rgba(26, 35, 53, 0.6)',
+                color: '#e8eaf2',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                    borderColor: 'rgba(34, 211, 238, 0.5)',
+                    transform: 'translateY(-4px)',
+                    boxShadow: '0 12px 32px rgba(0, 0, 0, 0.4)',
+                },
+            }}
+        >
+            <CardContent sx={{ flexGrow: 1, p: 3, display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            fontFamily: '"Orbitron", sans-serif',
+                            fontSize: '1.1rem',
+                            letterSpacing: '0.05em',
+                            color: '#22d3ee',
+                            flexShrink: 0,
+                        }}
+                    >
+                        {project.title}
+                    </Typography>
+                    {project.status && (
+                        <Box
+                            sx={{
+                                background: 'rgba(34, 211, 238, 0.1)',
+                                color: '#22d3ee',
+                                border: '1px solid rgba(34, 211, 238, 0.3)',
+                                borderRadius: 2,
+                                px: 1,
+                                py: 0.25,
+                                fontSize: '0.65rem',
+                                fontWeight: 600,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                                ml: 'auto',
+                            }}
+                        >
+                            {project.status}
+                        </Box>
+                    )}
+                </Box>
+                <Typography
+                    sx={{
+                        mt: 1,
+                        color: '#94a3b8',
+                        fontSize: '0.9rem',
+                        lineHeight: 1.5,
+                    }}
+                >
+                    {project.summary}
                 </Typography>
+                <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 1, flexGrow: 1 }}>
+                    {project.tech.map((skill, i) => (
+                        <SkillChip key={i} item={skill} />
+                    ))}
+                </Box>
+            </CardContent>
+            <Box sx={{ p: 3, borderTop: '1px solid rgba(35, 48, 74, 0.4)' }}>
+                <Link href={`/projects/${project.slug}`} passHref legacyBehavior>
+                    <Button
+                        sx={{
+                            width: '100%',
+                            border: '1px solid rgba(34, 211, 238, 0.4)',
+                            color: '#22d3ee',
+                            textTransform: 'none',
+                            fontSize: '0.85rem',
+                            fontWeight: 600,
+                            '&:hover': {
+                                background: 'rgba(34, 211, 238, 0.1)',
+                                borderColor: '#22d3ee',
+                            },
+                        }}
+                    >
+                        Open Project
+                    </Button>
+                </Link>
+                {project.links.repo && (
+                    <Box sx={{ mt: 1.5 }}>
+                        <Link
+                            href={project.links.repo}
+                            target="_blank"
+                            rel="noopener"
+                            sx={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: 1,
+                                color: '#94a3b8',
+                                textDecoration: 'none',
+                                fontSize: '0.8rem',
+                                '&:hover': { color: '#22d3ee' },
+                            }}
+                        >
+                            ↗ Repo
+                        </Link>
+                    </Box>
+                )}
             </Box>
-            <Box sx={{marginTop: '10px', height: 1, flexGrow: 5, display: 'flex', flexDirection: 'column', justifyContent: 'space-around'}}>
-                <Typography>
-                {props.body}
-                </Typography>
-            </Box>
-            {skilllist}
-          </CardContent>
-          <Box sx={{width: 1, display: 'flex', flexDirection: 'column-reverse', alignItems: 'start'}}>
-            <CardActions sx={{padding: '20px'}}>
-                <Button target='_blank' href={props.viewrepo} size="small">View Repo</Button>
-            </CardActions>
-          </Box>
         </Card>
-        </Paper>
-      );
+    );
 }

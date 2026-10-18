@@ -1,7 +1,84 @@
-html,body {
+html, body {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    background-color: #0a0e17;
+    color: #e8eaf2;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Space theme CSS variables */
+:root {
+    --space-bg: #0a0e17;
+    --space-surface: #121826;
+    --space-surface-light: #1a2335;
+    --space-border: #23304a;
+    --space-accent-cyan: #22d3ee;
+    --space-accent-magenta: #d946ef;
+    --space-accent-violet: #8b5cf6;
+    --space-text: #e8eaf2;
+    --space-text-muted: #94a3b8;
+}
+
+/* Minimal starfield background — pure CSS, no JS */
+.starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background:
+        radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 90px 40px, #ddd, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 160px 120px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 220px 80px, #eee, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 340px 200px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 410px 100px, #ddd, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 520px 300px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 590px 150px, #eee, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 650px 400px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 720px 220px, #ddd, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 830px 100px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 910px 320px, #eee, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 990px 200px, #fff, rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 1000px 1000px;
+    opacity: 0.6;
+}
+
+/* Twinkling stars layer — lightweight, few elements */
+.twinkle-star {
+    position: fixed;
+    background: white;
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0;
+    animation: twinkle var(--dur) ease-in-out infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+/* Glass panel */
+.space-panel {
+    background: rgba(18, 24, 38, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--space-border);
+    border-radius: 12px;
+}
+
+/* Subtle glow on hover */
+.space-glow:hover {
+    box-shadow: 0 0 24px rgba(34, 211, 238, 0.15);
+    border-color: rgba(34, 211, 238, 0.4);
+    transition: all 0.3s ease;
 }

@@ -1,0 +1,227 @@
+export const projects = [
+  {
+    slug: 'ray-tracer-rust',
+    title: 'Ray Tracer (Rust)',
+    status: 'Completed',
+    summary:
+      'A CPU-based path tracer written in Rust with BVH acceleration, soft shadows, and multi-threading.',
+    cover: null,
+    tech: [['Rust'], ['Computer Graphics'], ['Optimization']],
+    links: {
+      repo: 'https://github.com/pmistry9597/Ray_Trace-Rust',
+      demo: null,
+    },
+    sections: [
+      {
+        id: 'overview',
+        title: 'Overview',
+        type: 'text',
+        body:
+          'I built this ray tracer from scratch in Rust to learn about computer graphics and low-level optimization. It supports diffuse and specular materials, soft shadows via area lights, and a bounding volume hierarchy (BVH) for fast intersection culling. Rendering is multi-threaded using Rayon.',
+      },
+      {
+        id: 'architecture',
+        title: 'Architecture',
+        type: 'text',
+        body:
+          'The codebase is split into three crates:\n\n- `core` — vector math, ray primitives, and color math\n- `bvh` — bounding volume hierarchy construction and traversal\n- `cli` — command-line interface, image output, and scene parsing\n\nRays are traced recursively with a maximum depth to prevent infinite reflection loops. The BVH reduces the per-pixel intersection cost from O(n) to O(log n) over scene geometry.',
+      },
+      {
+        id: 'planning',
+        title: 'Planning',
+        type: 'text',
+        body:
+          'Development was split into milestones:\n1. Basic ray-sphere intersection and PPM output\n2. Material system (Lambertian, metal, dielectric)\n3. BVH acceleration structure\n4. Multi-threaded rendering and CLI polish\n\nEach milestone was tested with a rendered scene before moving to the next.',
+      },
+      {
+        id: 'demo',
+        title: 'Demo',
+        type: 'links',
+        body: 'View the source and render output on GitHub.',
+        links: [
+          { label: 'View Repo', url: 'https://github.com/pmistry9597/Ray_Trace-Rust' },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'climate-hack-2022',
+    title: 'Climate Hack 2022',
+    status: 'Completed',
+    summary:
+      'Submission for Climate Hack 2022 — placed 14th out of over 130 participants.',
+    cover: null,
+    tech: [['Python'], ['Deep Learning'], ['PyTorch']],
+    links: {
+      repo: 'https://github.com/pmistry9597/Climate-Hack-2022',
+      demo: null,
+    },
+    sections: [
+      {
+        id: 'overview',
+        title: 'Overview',
+        type: 'text',
+        body:
+          'My submission for Climate Hack 2022. I built a deep learning model using PyTorch to predict solar power output from satellite imagery and weather data, helping optimize grid storage.',
+      },
+      {
+        id: 'architecture',
+        title: 'Architecture',
+        type: 'text',
+        body:
+          'A convolutional neural network ingests satellite cloud-cover images, while a separate MLP processes numerical weather forecasts. The two branches are fused and regressed to a solar power output value.',
+      },
+      {
+        id: 'planning',
+        title: 'Planning',
+        type: 'text',
+        body:
+          'The hackathon timeline was 48 hours. We split work into data preprocessing, model architecture, training, and submission packaging, with daily checkpoint merges.',
+      },
+      {
+        id: 'demo',
+        title: 'Demo',
+        type: 'links',
+        body: 'Code and trained weights are available on GitHub.',
+        links: [
+          { label: 'View Repo', url: 'https://github.com/pmistry9597/Climate-Hack-2022' },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'rl-algo-demo',
+    title: 'Reinforcement Learning Algorithms Demo',
+    status: 'Completed',
+    summary:
+      'A demonstration of prominent reinforcement learning algorithms with visualizations.',
+    cover: null,
+    tech: [['Python'], ['Deep Learning'], ['PyTorch']],
+    links: {
+      repo: 'https://github.com/pmistry9597/Reinforcement-Learning-Algo-Demo',
+      demo: null,
+    },
+    sections: [
+      {
+        id: 'overview',
+        title: 'Overview',
+        type: 'text',
+        body:
+          'Interactive demonstrations of Q-Learning, Deep Q-Networks (DQN), and Policy Gradient methods applied to classic control environments.',
+      },
+      {
+        id: 'architecture',
+        title: 'Architecture',
+        type: 'text',
+        body:
+          'Modular Python package separating environment wrappers, agent implementations, and visualization utilities. PyTorch is used for function approximation in the deep RL agents.',
+      },
+      {
+        id: 'planning',
+        title: 'Planning',
+        type: 'text',
+        body:
+          'Implemented as a series of notebooks first, then refactored into a reusable package for easier experimentation.',
+      },
+      {
+        id: 'demo',
+        title: 'Demo',
+        type: 'links',
+        body: 'Run the notebooks locally or view the repository.',
+        links: [
+          { label: 'View Repo', url: 'https://github.com/pmistry9597/Reinforcement-Learning-Algo-Demo' },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'space-explorer',
+    title: 'Space Explorer',
+    status: 'Completed',
+    summary:
+      'Space game to learn about the solar system, gravity, and orbits.',
+    cover: null,
+    tech: [['Javascript']],
+    links: {
+      repo: 'https://github.com/pmistry9597/Space-Explorer',
+      demo: null,
+    },
+    sections: [
+      {
+        id: 'overview',
+        title: 'Overview',
+        type: 'text',
+        body:
+          'A browser-based space exploration game that teaches solar system concepts, gravity, and orbital mechanics through interactive simulation.',
+      },
+      {
+        id: 'architecture',
+        title: 'Architecture',
+        type: 'text',
+        body:
+          'Vanilla JavaScript with HTML5 Canvas for rendering. A simple physics integrator handles gravitational N-body dynamics between celestial objects.',
+      },
+      {
+        id: 'planning',
+        title: 'Planning',
+        type: 'text',
+        body:
+          'Designed as an educational tool, with levels that introduce one concept at a time (gravity, escape velocity, orbital velocity).',
+      },
+      {
+        id: 'demo',
+        title: 'Demo',
+        type: 'links',
+        body: 'Play the game and view the source on GitHub.',
+        links: [
+          { label: 'View Repo', url: 'https://github.com/pmistry9597/Space-Explorer' },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'circuit-builder',
+    title: 'Circuit Builder',
+    status: 'Completed',
+    summary:
+      'Circuit game with lessons and a simulator.',
+    cover: null,
+    tech: [['Javascript']],
+    links: {
+      repo: 'https://github.com/pmistry9597/Circuit-Builder',
+      demo: null,
+    },
+    sections: [
+      {
+        id: 'overview',
+        title: 'Overview',
+        type: 'text',
+        body:
+          'An interactive circuit simulator with built-in lessons. Users place components, wire them together, and observe current flow and voltage in real time.',
+      },
+      {
+        id: 'architecture',
+        title: 'Architecture',
+        type: 'text',
+        body:
+          'JavaScript-based circuit simulator using a node-matrix solver for DC analysis. The UI renders components and wires on an HTML5 Canvas.',
+      },
+      {
+        id: 'planning',
+        title: 'Planning',
+        type: 'text',
+        body:
+          'Lessons were designed to progress from basic (battery + resistor) to complex (capacitors, oscillators).',
+      },
+      {
+        id: 'demo',
+        title: 'Demo',
+        type: 'links',
+        body: 'Try the simulator and view the repository.',
+        links: [
+          { label: 'View Repo', url: 'https://github.com/pmistry9597/Circuit-Builder' },
+        ],
+      },
+    ],
+  }
+];
