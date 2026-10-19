@@ -1,6 +1,5 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import Head from "next/head";
 import ProjectCard from "@/components/project_card";
 import { projects } from "@/data/projects";
@@ -68,59 +67,115 @@ export default function Home() {
                         graphics, and machine learning. Currently exploring Rust,
                         ray tracing, and deep learning.
                     </Typography>
-                    <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <Link href="/projects" passHref legacyBehavior>
-                            <Typography
-                                sx={{
-                                    border: '1px solid #22d3ee',
-                                    color: '#22d3ee',
-                                    textTransform: 'none',
-                                    fontWeight: 600,
-                                    fontFamily: '"Oswald", sans-serif',
-                                    fontSize: '0.85rem',
-                                    px: 3,
-                                    py: 1.5,
-                                    textAlign: 'center',
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
+                        {/* Row 1: Social icons */}
+                        <Box sx={{ display: 'flex', gap: 2 }}>
+                            <Link
+                                href="https://github.com/pmistry9597"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    p: 1.5,
                                     borderRadius: 2,
-                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
                                     '&:hover': {
-                                        background: '#22d3ee',
-                                        color: '#0a0e17',
+                                        transform: 'scale(1.1)',
                                     },
                                 }}
+                                aria-label="GitHub"
                             >
-                                View Projects
-                            </Typography>
-                        </Link>
-                        <Link
-                            href="/preet_mistry_resume.pdf"
-                            target="_blank"
-                            rel="noopener"
-                            passHref
-                            legacyBehavior
-                        >
-                            <Typography
-                                sx={{
-                                    border: '1px solid rgba(148, 163, 184, 0.4)',
-                                    color: '#e8eaf2',
-                                    textTransform: 'none',
-                                    fontWeight: 600,
-                                    fontFamily: '"Oswald", sans-serif',
-                                    fontSize: '0.85rem',
-                                    px: 3,
-                                    py: 1.5,
-                                    textAlign: 'center',
+                                <img
+                                    src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                                    alt="GitHub"
+                                    width={50}
+                                    height={50}
+                                    style={{ filter: 'invert(1)' }}
+                                />
+                            </Link>
+                            <Link
+                                href="https://linkedin.com/in/preetmistry"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    p: 1.5,
                                     borderRadius: 2,
-                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
                                     '&:hover': {
-                                        borderColor: '#22d3ee',
+                                        transform: 'scale(1.1)',
+                                    },
+                                }}
+                                aria-label="LinkedIn"
+                            >
+                                <img
+                                    src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail&_=20140125013055"
+                                    alt="LinkedIn"
+                                    width={40}
+                                    height={40}
+                                    style={{ filter: 'grayscale(100%)' }}
+                                />
+                            </Link>
+                        </Box>
+                        {/* Row 2: CTA buttons */}
+                        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
+                            <Link href="/projects" passHref legacyBehavior>
+                                <Typography
+                                    sx={{
+                                        border: '1px solid #22d3ee',
                                         color: '#22d3ee',
-                                    },
-                                }}
+                                        textTransform: 'none',
+                                        fontWeight: 600,
+                                        fontFamily: '"Oswald", sans-serif',
+                                        fontSize: '0.85rem',
+                                        px: 3,
+                                        py: 1.5,
+                                        textAlign: 'center',
+                                        borderRadius: 2,
+                                        cursor: 'pointer',
+                                        '&:hover': {
+                                            background: '#22d3ee',
+                                            color: '#0a0e17',
+                                        },
+                                    }}
+                                >
+                                    View Projects
+                                </Typography>
+                            </Link>
+                            <Link
+                                href="/preet_mistry_resume.pdf"
+                                target="_blank"
+                                rel="noopener"
+                                passHref
+                                legacyBehavior
                             >
-                                Resume
-                            </Typography>
-                        </Link>
+                                <Typography
+                                    sx={{
+                                        border: '1px solid rgba(148, 163, 184, 0.4)',
+                                        color: '#e8eaf2',
+                                        textTransform: 'none',
+                                        fontWeight: 600,
+                                        fontFamily: '"Oswald", sans-serif',
+                                        fontSize: '0.85rem',
+                                        px: 3,
+                                        py: 1.5,
+                                        textAlign: 'center',
+                                        borderRadius: 2,
+                                        cursor: 'pointer',
+                                        '&:hover': {
+                                            borderColor: '#22d3ee',
+                                            color: '#22d3ee',
+                                        },
+                                    }}
+                                >
+                                    Resume
+                                </Typography>
+                            </Link>
+                        </Box>
                     </Box>
                 </Box>
 

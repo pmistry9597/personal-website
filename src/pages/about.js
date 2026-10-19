@@ -91,11 +91,11 @@ export default function About() {
                                     href="https://github.com/pmistry9597"
                                     target="_blank"
                                     rel="noopener"
-                                    sx={{
+                                    style={{
                                         display: 'inline-flex',
                                         alignItems: 'center',
                                         gap: 1,
-                                        color: '#22d3ee',
+                                        color: "#1976d2",
                                         textDecoration: 'none',
                                         fontSize: '0.95rem',
                                         fontWeight: 400,
@@ -116,13 +116,13 @@ export default function About() {
                                         display: 'inline-flex',
                                         alignItems: 'center',
                                         gap: 1,
-                                        color: '#e8eaf2',
+                                        color: "#1976d2",
                                         textDecoration: 'none',
                                         fontSize: '0.95rem',
                                         fontWeight: 400,
                                         fontFamily: '"Oswald", sans-serif',
                                         '&:hover': {
-                                            color: '#22d3ee',
+                                            color: '#d946ef',
                                             textDecoration: 'none',
                                         },
                                     }}
