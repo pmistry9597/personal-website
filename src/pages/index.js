@@ -104,7 +104,7 @@ export default function Home() {
                                 />
                             </Link>
                             <Link
-                                href="https://linkedin.com/in/preetmistry"
+                                href="https://linkedin.com/in/preet-mistry"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style={{
