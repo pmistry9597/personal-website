@@ -20,19 +20,25 @@ export default function Home() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         textAlign: 'center',
-                        py: { md: 20, sm: 12 },
+                        py: { md: 10, sm: 12 },
+                        // gap: 1,
                         minHeight: '60vh',
                         position: 'relative',
                         zIndex: 1,
                     }}
                 >
-                    <Box
-                        sx={{
-                            width: 56,
-                            height: 56,
+                    <img
+                        src="/gradphoto.jpg"
+                        alt="Preet Mistry"
+                        style={{
+                            width: 230,
+                            height: 230,
                             borderRadius: '50%',
-                            background: 'linear-gradient(135deg, #22d3ee, #d946ef)',
-                            mb: 3,
+                            // transform: 'scale(1.5)',
+                            objectFit: 'cover',
+                            border: '3px solid rgba(34, 211, 238, 0.4)',
+                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+                            marginBottom: '20px',
                         }}
                     />
                     <Typography
@@ -132,7 +138,7 @@ export default function Home() {
                                         fontWeight: 600,
                                         fontFamily: '"Oswald", sans-serif',
                                         fontSize: '0.85rem',
-                                        px: 3,
+                                        px: 5,
                                         py: 1.5,
                                         textAlign: 'center',
                                         borderRadius: 2,
@@ -161,7 +167,7 @@ export default function Home() {
                                         fontWeight: 600,
                                         fontFamily: '"Oswald", sans-serif',
                                         fontSize: '0.85rem',
-                                        px: 3,
+                                        px: 5,
                                         py: 1.5,
                                         textAlign: 'center',
                                         borderRadius: 2,
