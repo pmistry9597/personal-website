@@ -25,13 +25,13 @@ export default function About() {
                 </Box>
 
                 <Grid container spacing={4}>
-                    <Grid item xs={12} lg={8}>
+                    <Grid item xs={12} lg={9}>
                         <Paper
                             sx={{
                                 borderRadius: '12px',
                                 border: '1px solid rgba(35, 48, 74, 0.6)',
                                 background: 'rgba(26, 35, 53, 0.6)',
-                                p: 3,
+                                p: 5,
                             }}
                         >
                             <Typography
@@ -57,22 +57,50 @@ export default function About() {
                             >
                                 Computer engineering graduate from the University of Toronto (2024).
                                 Focused on systems programming, computer graphics, and machine learning.
-                                Currently exploring Rust, ray tracing, and deep learning.
-
+                                Currently exploring Rust, microservices, ray tracing, and deep learning.
+                            </Typography>
+                            <Typography
+                                sx={{
+                                    color: '#e8eaf2',
+                                    lineHeight: 1.8,
+                                    fontSize: '0.95rem',
+                                    whiteSpace: 'pre-line',
+                                    mt: 1,
+                                }}
+                            >
                                 This portfolio is built with Next.js + MUI — designed to be
-                                lightweight, fast, and easy to maintain.
+                                lightweight, fast, and easy to maintain. Cline + OpenRouter LLMs were used to help with this current overhaul.
                             </Typography>
                         </Paper>
                     </Grid>
-                    <Grid item xs={12} lg={4}>
+                    <Grid item xs={12} lg={3}>
                         <Paper
                             sx={{
                                 borderRadius: '12px',
                                 border: '1px solid rgba(35, 48, 74, 0.6)',
                                 background: 'rgba(26, 35, 53, 0.6)',
                                 p: 3,
+                                textAlign: 'center',
+                                // mr: 7,
+                                // ml: 7,
+                                // gap: 2,
                             }}
                         >
+                            {/* Profile photo */}
+                            <Box sx={{ textAlign: 'center', mb: 3 }}>
+                                <img
+                                    src="/gradphoto.jpg"
+                                    alt="Preet Mistry"
+                                    style={{
+                                        width: 120,
+                                        height: 120,
+                                        borderRadius: '50%',
+                                        objectFit: 'cover',
+                                        border: '3px solid rgba(34, 211, 238, 0.4)',
+                                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+                                    }}
+                                />
+                            </Box>
                             <Typography
                                 sx={{
                                     fontFamily: '"Orbitron", sans-serif',
@@ -86,48 +114,100 @@ export default function About() {
                             >
                                 Connect
                             </Typography>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                                <Link
-                                    href="https://github.com/pmistry9597"
-                                    target="_blank"
-                                    rel="noopener"
-                                    style={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: 1,
-                                        color: "#1976d2",
-                                        textDecoration: 'none',
-                                        fontSize: '0.95rem',
-                                        fontWeight: 400,
-                                        fontFamily: '"Oswald", sans-serif',
-                                        '&:hover': {
-                                            color: '#d946ef',
-                                            textDecoration: 'none',
-                                        },
+                            {/* Social icons row */}
+                            {/* <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}> */}
+                        {/* Row 1: Social icons */}
+                        <Box sx={{ display: 'flex', gap: 3, alignItems: "center", justifyContent: "center" }}>
+                            <Link
+                                href="https://github.com/pmistry9597"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    p: 1.5,
+                                    borderRadius: 2,
+                                    transition: 'all 0.2s ease',
+                                    '&:hover': {
+                                        transform: 'scale(1.1)',
+                                    },
+                                }}
+                                aria-label="GitHub"
+                            >
+                                <img
+                                    src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                                    alt="GitHub"
+                                    width={50}
+                                    height={50}
+                                    style={{ 
+                                        filter: 'invert(1)',
+                                        borderRadius: "50%",
                                     }}
-                                >
-                                    GitHub
-                                </Link>
+                                />
+                            </Link>
+                            <Link
+                                href="https://linkedin.com/in/preetmistry"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    p: 1.5,
+                                    borderRadius: 2,
+                                    transition: 'all 0.2s ease',
+                                    '&:hover': {
+                                        transform: 'scale(1.1)',
+                                    },
+                                }}
+                                aria-label="LinkedIn"
+                            >
+                                <img
+                                    src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail&_=20140125013055"
+                                    alt="LinkedIn"
+                                    width={40}
+                                    height={40}
+                                    style={{ filter: 'grayscale(100%)' }}
+                                />
+                            </Link>
+                        </Box>
+                            {/* Resume link */}
+                            <Box
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
+                                mt={3}
+                            >
                                 <Link
                                     href="/preet_mistry_resume.pdf"
                                     target="_blank"
                                     rel="noopener"
-                                    style={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: 1,
-                                        color: "#1976d2",
-                                        textDecoration: 'none',
-                                        fontSize: '0.95rem',
-                                        fontWeight: 400,
-                                        fontFamily: '"Oswald", sans-serif',
-                                        '&:hover': {
-                                            color: '#d946ef',
-                                            textDecoration: 'none',
-                                        },
-                                    }}
+                                    passHref
+                                    legacyBehavior
                                 >
-                                    Resume
+                                    <Typography
+                                        sx={{
+                                            border: '1px solid rgba(148, 163, 184, 0.4)',
+                                            color: '#e8eaf2',
+                                            textTransform: 'none',
+                                            fontWeight: 600,
+                                            fontFamily: '"Oswald", sans-serif',
+                                            fontSize: '0.85rem',
+                                            px: 5,
+                                            py: 1.5,
+                                            textAlign: 'center',
+                                            borderRadius: 2,
+                                            cursor: 'pointer',
+                                            '&:hover': {
+                                                borderColor: '#22d3ee',
+                                                color: '#22d3ee',
+                                            },
+                                            width: "60%",
+                                        }}
+                                    >
+                                        Resume
+                                    </Typography>
                                 </Link>
                             </Box>
                         </Paper>

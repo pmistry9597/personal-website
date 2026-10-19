@@ -70,8 +70,7 @@ export default function Home() {
                         }}
                     >
                         Software engineer focused on systems programming, computer
-                        graphics, and machine learning. Currently exploring Rust,
-                        ray tracing, and deep learning.
+                        graphics, and machine learning. Currently exploring Rust, microservices, ray tracing, and deep learning.
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
                         {/* Row 1: Social icons */}
@@ -98,7 +97,10 @@ export default function Home() {
                                     alt="GitHub"
                                     width={50}
                                     height={50}
-                                    style={{ filter: 'invert(1)' }}
+                                    style={{ 
+                                        filter: 'invert(1)',
+                                        borderRadius: "50%",
+                                    }}
                                 />
                             </Link>
                             <Link
