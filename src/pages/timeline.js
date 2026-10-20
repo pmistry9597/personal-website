@@ -104,22 +104,31 @@ export default function TimelinePage() {
           </Typography>
         </Box>
 
+        {/* Left-aligned timeline, centered on desktop */}
         <Box
           sx={{
-            position: 'relative',
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              left: '50%',
-              top: 0,
-              bottom: 0,
-              width: 2,
-              background: 'linear-gradient(180deg, #22d3ee 0%, #d946ef 50%, #8b5cf6 100%)',
-              transform: 'translateX(-50%)',
-              borderRadius: 1,
-            },
+            display: 'flex',
+            justifyContent: { xs: 'flex-start', md: 'center' },
+            width: '100%',
           }}
         >
+          <Box
+            sx={{
+              position: 'relative',
+              width: { xs: '100%', md: '940px' }, // 60px line + 820px card + 60px padding
+              // Timeline line on the left
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                left: { xs: '24px', md: '60px' },
+                top: 0,
+                bottom: 0,
+                width: 2,
+                background: 'linear-gradient(180deg, #22d3ee 0%, #d946ef 50%, #8b5cf6 100%)',
+                borderRadius: 1,
+              },
+            }}
+          >
           {timeline.map((entry, index) => (
             <TimelineEntry
               key={entry.id}
@@ -128,6 +137,7 @@ export default function TimelinePage() {
               isLast={index === timeline.length - 1}
             />
           ))}
+        </Box>
         </Box>
       </Container>
     </>
@@ -142,16 +152,16 @@ function TimelineEntry({ entry, index, isLast }) {
       sx={{
         position: 'relative',
         display: 'flex',
-        justifyContent: index % 2 === 0 ? 'flex-end' : 'flex-start',
+        // All entries aligned to the right of the timeline line
+        paddingLeft: { xs: '56px', md: '96px' },
         mb: 6,
-        paddingLeft: index % 2 === 0 ? 0 : 'calc(50% + 24px)',
-        paddingRight: index % 2 === 0 ? 'calc(50% + 24px)' : 0,
       }}
     >
+      {/* Timeline dot on the line */}
       <Box
         sx={{
           position: 'absolute',
-          left: '50%',
+          left: { xs: '17px', md: '53px' },
           top: 8,
           width: 16,
           height: 16,
@@ -159,29 +169,29 @@ function TimelineEntry({ entry, index, isLast }) {
           background: color,
           border: '3px solid #0a0e17',
           boxShadow: `0 0 0 2px ${color}`,
-          transform: 'translateX(-50%)',
           zIndex: 2,
         }}
       />
 
+      {/* Connector line to sub-items */}
       {entry.subItems && entry.subItems.length > 0 && (
         <Box
           sx={{
             position: 'absolute',
-            left: '50%',
+            left: { xs: '24px', md: '60px' },
             top: 24,
             bottom: isLast ? 0 : -32,
             width: 1,
             borderLeft: `2px dashed ${color}40`,
-            transform: 'translateX(-50%)',
           }}
         />
       )}
 
+      {/* Main entry card */}
       <Box
         sx={{
-          width: 'calc(50% - 32px)',
-          maxWidth: 480,
+          width: '100%',
+          maxWidth: { xs: 'none', md: '820px' },
           position: 'relative',
           zIndex: 1,
         }}
@@ -201,6 +211,7 @@ function TimelineEntry({ entry, index, isLast }) {
           }}
           elevation={0}
         >
+          {/* Header */}
           <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
             {renderIcon({ entry, color })}
             <Box sx={{ flexGrow: 1, minWidth: 0 }}>
@@ -258,6 +269,7 @@ function TimelineEntry({ entry, index, isLast }) {
             </Box>
           </Box>
 
+          {/* Description */}
           {entry.description && (
             <Typography
               sx={{
@@ -271,6 +283,7 @@ function TimelineEntry({ entry, index, isLast }) {
             </Typography>
           )}
 
+          {/* Highlights */}
           {entry.highlights && entry.highlights.length > 0 && (
             <Box sx={{ mb: 2 }}>
               {entry.highlights.map((highlight, i) => (
@@ -293,6 +306,7 @@ function TimelineEntry({ entry, index, isLast }) {
             </Box>
           )}
 
+          {/* Tech chips */}
           {entry.tech && entry.tech.length > 0 && (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: 2 }}>
               {entry.tech.map((tech, i) => (
@@ -301,6 +315,7 @@ function TimelineEntry({ entry, index, isLast }) {
             </Box>
           )}
 
+          {/* Links */}
           {entry.links && entry.links.length > 0 && (
             <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
               {entry.links.map((link, i) => (
@@ -332,6 +347,7 @@ function TimelineEntry({ entry, index, isLast }) {
             </Box>
           )}
 
+          {/* Sub-items */}
           {entry.subItems && entry.subItems.length > 0 && (
             <Box sx={{ mt: 3, pt: 3, borderTop: `1px solid ${color}20` }}>
               <Typography
@@ -371,7 +387,7 @@ function SubItemCard({ sub, parentColor, index }) {
         borderRadius: 2,
         p: 2,
         mb: 1.5,
-        ml: 2,
+        ml: { xs: '16px', md: '24px' },
         borderLeft: `3px solid ${color}`,
         transition: 'all 0.2s ease',
         '&:hover': {
@@ -419,7 +435,7 @@ function SubItemCard({ sub, parentColor, index }) {
             lineHeight: 1.6,
             fontSize: '0.8rem',
             mb: 1,
-            ml: 2.5,
+            ml: { xs: '44px', md: '52px' },
           }}
         >
           {sub.description}
@@ -427,7 +443,7 @@ function SubItemCard({ sub, parentColor, index }) {
       )}
 
       {sub.highlights && sub.highlights.length > 0 && (
-        <Box sx={{ ml: 2.5, mb: 1 }}>
+        <Box sx={{ ml: { xs: '44px', md: '52px' }, mb: 1 }}>
           {sub.highlights.map((highlight, i) => (
             <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 0.75, mb: 0.5 }}>
               <Box
@@ -449,7 +465,7 @@ function SubItemCard({ sub, parentColor, index }) {
       )}
 
       {sub.tech && sub.tech.length > 0 && (
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, ml: 2.5, mb: 1 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, ml: { xs: '44px', md: '52px' }, mb: 1 }}>
           {sub.tech.map((tech, i) => (
             <SkillChip key={i} name={tech} color={color} />
           ))}
@@ -457,7 +473,7 @@ function SubItemCard({ sub, parentColor, index }) {
       )}
 
       {sub.links && sub.links.length > 0 && (
-        <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap', ml: 2.5 }}>
+        <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap', ml: { xs: '44px', md: '52px' } }}>
           {sub.links.map((link, i) => (
             <Link
               key={i}
