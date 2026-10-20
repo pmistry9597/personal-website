@@ -30,7 +30,7 @@ export default function Nav({ pathname }) {
           </Typography>
         </LinkComponent>
         <Box sx={{ flexGrow: 1 }} />
-        {['/', '/projects', '/about'].map((route) => (
+        {['/', '/timeline', '/projects', '/about'].map((route) => (
           <LinkComponent key={route} href={route} passHref legacyBehavior>
             <Typography
               sx={{
@@ -49,7 +49,7 @@ export default function Nav({ pathname }) {
                 },
               }}
             >
-              {route === '/' ? 'Home' : route === '/projects' ? 'Projects' : 'About'}
+              {route === '/' ? 'Home' : route === '/timeline' ? 'Experience' : route === '/projects' ? 'Projects' : 'About'}
             </Typography>
           </LinkComponent>
         ))}
