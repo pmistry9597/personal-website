@@ -26,7 +26,7 @@ html, body {
     --space-text-muted: #94a3b8;
 }
 
-/* Minimal starfield background — pure CSS, no JS */
+/* Starfield with nebula/galaxy layers — pure CSS, GPU-accelerated */
 .starfield {
     position: fixed;
     top: 0;
@@ -35,6 +35,13 @@ html, body {
     height: 100%;
     z-index: -1;
     background:
+        /* Nebula layer — large soft galaxy glows, each covers full viewport */
+        radial-gradient(ellipse 800px 600px at 10% 20%, rgba(34, 211, 238, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 1000px 800px at 90% 80%, rgba(217, 70, 239, 0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 700px 700px at 50% 50%, rgba(139, 92, 246, 0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 600px 500px at 70% 10%, rgba(34, 211, 238, 0.03) 0%, transparent 70%),
+        
+        /* Star layer — small sharp stars, each covers full viewport */
         radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
         radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
         radial-gradient(1px 1px at 90px 40px, #ddd, rgba(0,0,0,0)),
@@ -49,9 +56,15 @@ html, body {
         radial-gradient(2px 2px at 830px 100px, #fff, rgba(0,0,0,0)),
         radial-gradient(1px 1px at 910px 320px, #eee, rgba(0,0,0,0)),
         radial-gradient(2px 2px at 990px 200px, #fff, rgba(0,0,0,0));
-    background-repeat: repeat;
-    background-size: 1000px 1000px;
-    opacity: 0.6;
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+    animation: nebula-drift 80s ease-in-out infinite alternate;
+}
+
+@keyframes nebula-drift {
+    0%   { background-position: 0% 0%, 100% 100%, 50% 50%, 70% 10%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+    100% { background-position: 5% 3%, 95% 97%, 55% 52%, 75% 13%, 2% 1%, 2% 1%, 2% 1%, 2% 1%, 2% 1%, 2% 1%, 2% 1%, 2% 1%, 2% 1%, 2% 1%, 2% 1%, 2% 1%, 2% 1%, 2% 1%, 2% 1%; }
 }
 
 /* Twinkling stars layer — lightweight, few elements */
