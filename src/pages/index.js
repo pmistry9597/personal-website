@@ -2,6 +2,7 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import Link from "next/link";
 import Head from "next/head";
 import ProjectCard from "@/components/project_card";
+import SkillsSection from "@/components/skills_section";
 import { projects } from "@/data/projects";
 
 const featured = projects.slice(0, 3);
@@ -235,6 +236,10 @@ export default function Home() {
                         </Link>
                     </Box>
                 </Box>
+
+                {/* Skills Section */}
+                <SkillsSection />
+
             </Container>
         </>
     );
