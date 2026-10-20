@@ -5,8 +5,8 @@ export const timeline = [
     title: 'Career Break',
     subtitle: 'Travel & Personal Projects',
     location: '',
-    startDate: '2021-06',
-    endDate: '2022-01',
+    startDate: '2025-10',
+    endDate: '2026-09',
     description: 'Took intentional time off to travel, reset, and explore personal interests.',
     highlights: [
       'Visited 12 countries across SE Asia and Europe',
@@ -60,8 +60,9 @@ export const timeline = [
     ],
     tech: ['Java', 'Python', 'Typescript', 'AWS', 'RxJava'],
     links: [
-      { label: 'Company Website', url: '#' }
+      // { label: 'Company Website', url: '#' }
     ],
+    featured: true,
     // subItems: [
     //   {
     //     id: 'project-1',
@@ -95,6 +96,7 @@ export const timeline = [
     ],
     tech: ['Java', 'Spring', 'Python', 'TypeScript', 'Angular', 'Docker', 'Kubernetes'],
     links: [],
+    featured: true,
     subItems: []
   },
   {
@@ -132,6 +134,7 @@ export const timeline = [
     ],
     tech: ['C', 'C++', 'Verilog', 'Python', 'Linux', 'Control Systems', 'Network Architecture', 'Analog Electronics'],
     links: [],
+    featured: true,
     subItems: []
   }
 ];

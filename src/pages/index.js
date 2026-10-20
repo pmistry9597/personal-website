@@ -3,9 +3,12 @@ import Link from "next/link";
 import Head from "next/head";
 import ProjectCard from "@/components/project_card";
 import SkillsSection from "@/components/skills_section";
+import TimelineHighlight from "@/components/timeline_highlight";
 import { projects } from "@/data/projects";
+import { timeline } from "@/data/timeline";
 
 const featured = projects.slice(0, 3);
+const featuredTimeline = timeline.filter((entry) => entry.featured);
 
 export default function Home() {
     return (
@@ -235,6 +238,62 @@ export default function Home() {
                             </Typography>
                         </Link>
                     </Box>
+                </Box>
+
+                {/* Timeline Highlights */}
+                <Box sx={{ pt: 8, pb: 12, position: 'relative', zIndex: 1 }}>
+                  <Box sx={{ mb: 6, textAlign: 'center' }}>
+                    <Typography
+                      sx={{
+                        fontFamily: '"Orbitron", sans-serif',
+                        fontSize: '1.5rem',
+                        fontWeight: 700,
+                        letterSpacing: '0.1em',
+                        color: '#e8eaf2',
+                      }}
+                    >
+                      Experience Highlights
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: '#94a3b8',
+                        fontSize: '1rem',
+                        maxWidth: 600,
+                        mx: 'auto',
+                        lineHeight: 1.7,
+                      }}
+                    >
+                      Selected highlights from my professional journey.
+                    </Typography>
+                  </Box>
+                  {featuredTimeline.map((entry) => (
+                    <TimelineHighlight key={entry.id} entry={entry} />
+                  ))}
+                  <Box sx={{ mt: 6, textAlign: 'center' }}>
+                    <Link href="/timeline" passHref legacyBehavior>
+                      <Typography
+                        sx={{
+                          border: '1px solid rgba(34, 211, 238, 0.4)',
+                          color: '#22d3ee',
+                          textTransform: 'none',
+                          fontWeight: 600,
+                          fontFamily: '"Oswald", sans-serif',
+                          fontSize: '0.85rem',
+                          px: 4,
+                          py: 1.5,
+                          textAlign: 'center',
+                          borderRadius: 2,
+                          cursor: 'pointer',
+                          '&:hover': {
+                            background: 'rgba(34, 211, 238, 0.1)',
+                            borderColor: '#22d3ee',
+                          },
+                        }}
+                      >
+                        View Full Timeline
+                      </Typography>
+                    </Link>
+                  </Box>
                 </Box>
 
                 {/* Skills Section */}
