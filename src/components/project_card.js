@@ -96,8 +96,9 @@ export default function ProjectCard({ project }) {
                         Open Project
                     </Typography>
                 </Link>
-                {project.links.repo && (
-                    <Box sx={{ mt: 1.5 }}>
+                
+                <Box sx={{ mt: 1.5, minHeight: "3em", }}>
+                    {project.links.repo && (
                         <Link
                             href={project.links.repo}
                             target="_blank"
@@ -121,8 +122,8 @@ export default function ProjectCard({ project }) {
                         >
                             ↗ REPO
                         </Link>
-                    </Box>
-                )}
+                    )}
+                </Box>
             </Box>
         </Card>
     );
