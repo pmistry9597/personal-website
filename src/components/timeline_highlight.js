@@ -76,15 +76,19 @@ export default function TimelineHighlight({ entry }) {
       sx={{
         position: 'relative',
         display: 'flex',
-        paddingLeft: 72,
+        flexDirection: { xs: 'column', md: 'row' },
+        paddingLeft: { xs: 0, md: 72 },
         mb: 6,
+        alignItems: { xs: 'stretch', md: 'flex-start' },
       }}
     >
+      {/* Dot - centered above card on mobile, on line at left on desktop */}
       <Box
         sx={{
           position: 'absolute',
-          left: 24,
-          top: 12,
+          left: { xs: '50%', md: 24 },
+          top: { xs: 0, md: 12 },
+          transform: { xs: 'translateX(-50%)', md: 'none' },
           width: 16,
           height: 16,
           borderRadius: '50%',
@@ -92,11 +96,14 @@ export default function TimelineHighlight({ entry }) {
           border: '3px solid #0a0e17',
           boxShadow: `0 0 0 2px ${color}`,
           zIndex: 2,
+          mb: { xs: 16, md: 0 },
         }}
       />
 
+      {/* Connector line - only on desktop (horizontal layout) */}
       <Box
         sx={{
+          display: { xs: 'none', md: 'block' },
           position: 'absolute',
           left: 31,
           top: 38,
@@ -106,10 +113,11 @@ export default function TimelineHighlight({ entry }) {
         }}
       />
 
+      {/* Card - full width on mobile, constrained on desktop */}
       <Box
         sx={{
           width: '100%',
-          maxWidth: 820,
+          maxWidth: { xs: 'none', md: 820 },
         }}
       >
         <Paper
@@ -118,7 +126,7 @@ export default function TimelineHighlight({ entry }) {
             backdropFilter: 'blur(12px)',
             border: `1px solid ${color}40`,
             borderRadius: 3,
-            p: 3,
+            p: { xs: 2, md: 3 },
             transition: 'all 0.3s ease',
             '&:hover': {
               borderColor: color,
