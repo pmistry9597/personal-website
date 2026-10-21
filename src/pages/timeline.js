@@ -108,14 +108,16 @@ export default function TimelinePage() {
         <Box
           sx={{
             display: 'flex',
-            justifyContent: { xs: 'flex-start', md: 'center' },
+            // justifyContent: { xs: 'flex-start', md: 'flex-start' },
             width: '100%',
+            
           }}
         >
           <Box
             sx={{
+              // backgroundColor: 'red',
               position: 'relative',
-              width: { xs: '100%', md: '940px' }, // 60px line + 820px card + 60px padding
+              width: { xs: '100%', md: '100%' }, // 60px line + 820px card + 60px padding
               // Timeline line on the left
               '&::before': {
                 content: '""',
@@ -150,6 +152,8 @@ function TimelineEntry({ entry, index, isLast }) {
   return (
     <Box
       sx={{
+        // backgroundColor: 'green',
+        width: "100%",
         position: 'relative',
         display: 'flex',
         // All entries aligned to the right of the timeline line
@@ -187,11 +191,21 @@ function TimelineEntry({ entry, index, isLast }) {
         />
       )}
 
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          // backgroundColor: 'green',
+          width: "100%",
+        }}
+      >
+
       {/* Main entry card */}
       <Box
         sx={{
           width: '100%',
-          maxWidth: { xs: 'none', md: '820px' },
+          maxWidth: { xs: 'none', md: '900px' },
           position: 'relative',
           zIndex: 1,
         }}
@@ -369,6 +383,7 @@ function TimelineEntry({ entry, index, isLast }) {
             </Box>
           )}
         </Paper>
+      </Box>
       </Box>
     </Box>
   );
