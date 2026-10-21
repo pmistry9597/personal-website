@@ -33,7 +33,7 @@ export default function ProjectsPage() {
                             fontSize: '1rem',
                         }}
                     >
-                        A selection of work spanning systems, graphics, and ML.
+                        A selection of work spanning my own personal endeavors.
                     </Typography>
                 </Box>
 

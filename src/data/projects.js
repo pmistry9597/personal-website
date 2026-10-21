@@ -1,12 +1,57 @@
 export const projects = [
   {
+    slug: 'trackme-fitness',
+    title: 'TrackMe Fitness',
+    status: 'Completed',
+    summary:
+      'A polyglot full-stack mobile app that addresses the unique needs of athletes that combine resistance training with endurance running. Repo is private due to possible monetization at later time.',
+    cover: null,
+    tech: [['Rust'], ['Typescript'], ['REST'], ['Security'], ['Axum'], ['Tokio'], ['Async Rust'], ['Tauri']],
+    links: {
+      // repo: 'https://github.com/pmistry9597/Ray_Trace-Rust',
+      demo: null,
+    },
+    sections: [
+      {
+        id: 'overview',
+        title: 'Overview',
+        type: 'text',
+        body:
+          'I built this ray tracer from scratch in Rust to learn about computer graphics and low-level optimization. It supports diffuse and specular materials, soft shadows via area lights, and a bounding volume hierarchy (BVH) for fast intersection culling. Rendering is multi-threaded using Rayon.',
+      },
+      {
+        id: 'architecture',
+        title: 'Architecture',
+        type: 'text',
+        body:
+          'The codebase is split into three crates:\n\n- `core` — vector math, ray primitives, and color math\n- `bvh` — bounding volume hierarchy construction and traversal\n- `cli` — command-line interface, image output, and scene parsing\n\nRays are traced recursively with a maximum depth to prevent infinite reflection loops. The BVH reduces the per-pixel intersection cost from O(n) to O(log n) over scene geometry.',
+      },
+      {
+        id: 'planning',
+        title: 'Planning',
+        type: 'text',
+        body:
+          'Development was split into milestones:\n1. Basic ray-sphere intersection and PPM output\n2. Material system (Lambertian, metal, dielectric)\n3. BVH acceleration structure\n4. Multi-threaded rendering and CLI polish\n\nEach milestone was tested with a rendered scene before moving to the next.',
+      },
+      {
+        id: 'demo',
+        title: 'Demo',
+        type: 'links',
+        body: 'Repo is currently being held private due to possible monetization at a future point.',
+        links: [
+          // { label: 'View Repo', url: 'https://github.com/pmistry9597/Ray_Trace-Rust' },
+        ],
+      },
+    ],
+  },
+  {
     slug: 'ray-tracer-rust',
-    title: 'Ray Tracer (Rust)',
+    title: 'Ray Tracer',
     status: 'Completed',
     summary:
       'A CPU-based path tracer written in Rust with BVH acceleration, soft shadows, and multi-threading.',
     cover: null,
-    tech: [['Rust'], ['Computer Graphics'], ['Optimization']],
+    tech: [['Rust'], ['Computer Graphics'], ['Concurrency'], ['Optimization']],
     links: {
       repo: 'https://github.com/pmistry9597/Ray_Trace-Rust',
       demo: null,

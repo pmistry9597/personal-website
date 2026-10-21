@@ -526,8 +526,7 @@ function SubItemCard({ sub, parentColor, index }) {
         }}
       >
         {sub.projectLink !== null ? <Link 
-        // href={`/projects/${project.slug}`} 
-        href="/"
+        href={sub.projectLink} 
         passHref legacyBehavior>
             <Typography
                 sx={{

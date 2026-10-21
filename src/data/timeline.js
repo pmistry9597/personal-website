@@ -32,14 +32,14 @@ export const timeline = [
       {
         id: 'project-2',
         type: 'project',
-        title: 'TrackMe Fitness: Workout Tracking App',
+        title: 'TrackMe Fitness',
         description: 'A polyglot full-stack mobile app that addresses the unique needs of athletes that combine resistance training with endurance running.',
-        tech: ['Rust', 'Typescript', 'Concurrency', 'Axum', 'Tokio', 'Async Rust', 'Tauri'],
+        tech: ['Rust', 'Typescript', 'REST', 'Security', 'Axum', 'Tokio', 'Async Rust', 'Tauri'],
         links: [
           // { label: 'View Repo', url: '#' },
           // {label: 'View Project', url: '#'},
         ],
-        projectLink: "",
+        projectLink: "/projects/trackme-fitness",
       }
     ]
   },
