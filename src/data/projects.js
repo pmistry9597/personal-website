@@ -6,7 +6,7 @@ export const projects = [
     summary:
       'A polyglot full-stack mobile app that addresses the unique needs of athletes that combine resistance training with endurance running. Repo is private due to possible monetization at later time.',
     cover: null,
-    tech: [['Rust'], ['Typescript'], ['REST'], ['Security'], ['Axum'], ['Tokio'], ['Async Rust'], ['Tauri']],
+    tech: [['Rust'], ['Typescript'], ['REST'], ['Security'], ['Tokio'], ['Async Rust']],
     links: {
       // repo: 'https://github.com/pmistry9597/Ray_Trace-Rust',
       demo: null,
@@ -96,7 +96,7 @@ export const projects = [
     summary:
       'Submission for Climate Hack 2022 — placed 14th out of over 130 participants.',
     cover: null,
-    tech: [['Python'], ['Deep Learning'], ['PyTorch']],
+    tech: [['Python'], ['Deep Learning']],
     links: {
       repo: 'https://github.com/pmistry9597/Climate-Hack-2022',
       demo: null,
@@ -141,7 +141,7 @@ export const projects = [
     summary:
       'A demonstration of prominent reinforcement learning algorithms with visualizations.',
     cover: null,
-    tech: [['Python'], ['Deep Learning'], ['PyTorch']],
+    tech: [['Python'], ['Deep Learning']],
     links: {
       repo: 'https://github.com/pmistry9597/Reinforcement-Learning-Algo-Demo',
       demo: null,
