@@ -517,6 +517,42 @@ function SubItemCard({ sub, parentColor, index }) {
           ))}
         </Box>
       )}
+
+      <Box
+        sx={{
+          width: "8em",
+          ml: { xs: '44px', md: '52px' },
+          mt: 2,
+        }}
+      >
+        {sub.projectLink !== null ? <Link 
+        // href={`/projects/${project.slug}`} 
+        href="/"
+        passHref legacyBehavior>
+            <Typography
+                sx={{
+                    width: '100%',
+                    border: '1px solid rgba(34, 211, 238, 0.4)',
+                    color: '#22d3ee',
+                    textTransform: 'none',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    fontFamily: '"Oswald", sans-serif',
+                    textAlign: 'center',
+                    borderRadius: 2,
+                    px: 0.5,
+                    py: 1,
+                    cursor: 'pointer',
+                    '&:hover': {
+                        background: 'rgba(34, 211, 238, 0.1)',
+                        borderColor: '#22d3ee',
+                    },
+                }}
+            >
+                Open Project
+            </Typography>
+          </Link> : <></>}
+      </Box>
     </Paper>
   );
 }

@@ -7,37 +7,39 @@ export const timeline = [
     location: '',
     startDate: '2025-10',
     endDate: '2026-09',
-    description: 'Took intentional time off to travel, reset, and explore personal interests.',
+    description: 'Took intentional time off to travel, reset, fulfil family commitments, and explore personal interests and new engineering skills.',
     highlights: [
-      'Visited 12 countries across SE Asia and Europe',
-      'Built and launched a personal project app',
-      'Completed 3 online courses in systems programming'
+      'Engineered and deployed TrackMe Fitness, a full-stack, mobile, workout tracking app (see Projects)',
+      'Volunteered 3-4 months on a Buddhist monastery\'s snow and grounds safety team, proactively coordinating snow and ice response (snow blowers, clearing trucks, shoveling, salting) to keep pathways safe for residents and visitors',
+      'Traveled internationally and supported family commitments, including a family wedding'
     ],
     tech: [],
     links: [],
     subItems: [
-      {
-        id: 'travel-1',
-        type: 'travel',
-        title: 'Solo Travel — Southeast Asia',
-        description: '3 months backpacking through Thailand, Vietnam, Indonesia, and Japan. Focused on cultural immersion and photography.',
-        highlights: [
-          'Learned basic Thai and Vietnamese',
-          'Completed 10-day Vipassana meditation retreat',
-          'Shot 2000+ photos (film + digital)'
-        ],
-        tech: [],
-        links: []
-      },
+      // {
+      //   id: 'travel-1',
+      //   type: 'travel',
+      //   title: 'Solo Travel — Southeast Asia',
+      //   description: '3 months backpacking through Thailand, Vietnam, Indonesia, and Japan. Focused on cultural immersion and photography.',
+      //   highlights: [
+      //     'Learned basic Thai and Vietnamese',
+      //     'Completed 10-day Vipassana meditation retreat',
+      //     'Shot 2000+ photos (film + digital)'
+      //   ],
+      //   tech: [],
+      //   links: []
+      // },
       {
         id: 'project-2',
         type: 'project',
-        title: 'Personal Project: Habit Tracker App',
-        description: 'A minimalist habit tracker with streak visualization and export features. Built to learn React Native.',
-        tech: ['React Native', 'TypeScript', 'SQLite', 'Expo'],
+        title: 'TrackMe Fitness: Workout Tracking App',
+        description: 'A polyglot full-stack mobile app that addresses the unique needs of athletes that combine resistance training with endurance running.',
+        tech: ['Rust', 'Typescript', 'Concurrency', 'Axum', 'Tokio', 'Async Rust', 'Tauri'],
         links: [
-          { label: 'View Repo', url: '#' }
-        ]
+          // { label: 'View Repo', url: '#' },
+          // {label: 'View Project', url: '#'},
+        ],
+        projectLink: "",
       }
     ]
   },
