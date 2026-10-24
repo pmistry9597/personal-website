@@ -191,6 +191,7 @@ export const projects = [
       repo: 'https://github.com/pmistry9597/Space-Explorer',
       demo: null,
     },
+    contentPath: 'content/projects/space-explorer.mdx',
     sections: [
       {
         id: 'overview',
