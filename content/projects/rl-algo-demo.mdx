@@ -1,0 +1,57 @@
+# Reinforcement Learning Algorithms Demonstration
+
+A hands-on implementation of foundational and modern RL algorithms, built from scratch with PyTorch.
+
+---
+
+## What is RL?
+
+Reinforcement Learning trains agents to make sequential decisions by maximizing cumulative reward. The standard framework is the **Markov Decision Process (MDP)**: at each timestep, the agent observes state $s$, takes action $a$, receives reward $r$, and transitions to $s'$.
+
+> Behind breakthroughs like AlphaGo (2016) — the first ML system to defeat a top human Go player.
+
+---
+
+## Algorithms Implemented
+
+| Algorithm | Status | Type | Key Idea |
+|-----------|--------|------|----------|
+| **DQN** | ✅ Done | Value-based | Deep Q-Network with experience replay & target networks (DeepMind 2015) |
+| **Policy Gradients** | ✅ Done | Policy-based | Directly optimize policy via gradient ascent on expected return |
+| **PPO** | 🚧 Planned | Actor-Critic | Clipped surrogate objective for stable policy updates |
+| **SAC** | 🚧 Planned | Actor-Critic | Maximum entropy RL with automatic temperature tuning |
+
+First two are foundational; PPO/SAC are today's workhorses.
+
+---
+
+## DQN on LunarLander-v2
+
+![DQN LunarLander](/images/dqn_lunarlanderv2.gif)
+
+Trained on Gymnasium's `LunarLander-v2` — land the ship between flags using discrete actions (fire left/right/main engine). Key implementation details:
+
+- **Network**: 2 hidden layers (64 units each), ReLU activations
+- **Experience replay**: 100k buffer, batch size 64
+- **Target network**: Updated every 100 steps
+- **Epsilon-greedy**: Linear decay from 1.0 → 0.01 over 500 episodes
+- **Optimizer**: Adam, lr=1e-3
+
+Converges to ~200+ average reward (solved threshold) in ~400 episodes.
+
+---
+
+---
+
+## What's Next
+
+- **PPO** — clipped objective, GAE advantage estimation
+- **SAC** — twin critics, entropy regularization, auto-tuned $\alpha$
+- Continuous control environments (MuJoCo, Box2D)
+- Experiment tracking with Weights & Biases
+
+---
+
+## Demo
+
+[View Repo](https://github.com/pmistry9597/Reinforcement-Learning-Algo-Demo)

@@ -1,6 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { serialize } from 'next-mdx-remote/serialize';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 /**
  * Read and serialize an MDX file for use with MDXRemote
@@ -18,7 +21,11 @@ export async function compileMDXFile(contentPath) {
   
   const mdxSource = await serialize(source, {
     parseFrontmatter: false,
-    scope: {}, // Add empty scope to avoid issues
+    scope: {},
+    mdxOptions: {
+      remarkPlugins: [remarkGfm, remarkMath],
+      rehypePlugins: [rehypeKatex],
+    },
   });
   
   return mdxSource;

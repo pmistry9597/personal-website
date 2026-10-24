@@ -146,6 +146,7 @@ export const projects = [
       repo: 'https://github.com/pmistry9597/Reinforcement-Learning-Algo-Demo',
       demo: null,
     },
+    contentPath: 'content/projects/rl-algo-demo.mdx',
     sections: [
       {
         id: 'overview',
