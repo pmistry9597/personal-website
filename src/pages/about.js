@@ -89,7 +89,7 @@ export default function About() {
                             {/* Profile photo */}
                             <Box sx={{ textAlign: 'center', mb: 3 }}>
                                 <img
-                                    src="/gradphoto.jpg"
+                                    src="/images/gradphoto.jpg"
                                     alt="Preet Mistry"
                                     style={{
                                         width: 120,

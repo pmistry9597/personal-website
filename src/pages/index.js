@@ -32,7 +32,7 @@ export default function Home() {
                     }}
                 >
                     <img
-                        src="/gradphoto.jpg"
+                        src="/images/gradphoto.jpg"
                         alt="Preet Mistry"
                         style={{
                             width: 230,
