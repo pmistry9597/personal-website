@@ -236,6 +236,7 @@ export const projects = [
       repo: 'https://github.com/pmistry9597/Circuit-Builder',
       demo: null,
     },
+    contentPath: 'content/projects/circuit-builder.mdx',
     sections: [
       {
         id: 'overview',

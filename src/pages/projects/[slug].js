@@ -1,10 +1,13 @@
+import Link from "next/link";
 import { Box, Container, Grid, Typography, Chip, Paper } from "@mui/material";
 import Head from "next/head";
-import Link from "next/link";
 import { projects } from "@/data/projects";
 import SkillChip from "@/components/skill_chip";
+import { MDXRemote } from "next-mdx-remote";
+import { MDXComponents } from "@/components/MDXComponents";
+import { compileMDXFile, hasMDXContent } from "@/lib/mdx";
 
-export default function ProjectDetail({ project }) {
+export default function ProjectDetail({ project, mdxContent }) {
     if (!project) {
         return (
             <>
@@ -25,7 +28,7 @@ export default function ProjectDetail({ project }) {
                             Project Not Found
                         </Typography>
                         <Box sx={{ mt: 2 }}>
-                            <Link href="/projects" passHref legacyBehavior>
+                            <Link href="/projects" style={{ textDecoration: 'none' }}>
                                 <Typography
                                     sx={{
                                         border: "1px solid rgba(34, 211, 238, 0.4)",
@@ -111,8 +114,11 @@ export default function ProjectDetail({ project }) {
                         ))}
                     </Box>
                 </Box>
-                {/* Sections: Overview, Architecture, Planning, Demo */}
-                <Grid container spacing={4}>
+                {/* Content: MDX or legacy sections */}
+                {mdxContent ? (
+                  <MDXRemote {...mdxContent} components={MDXComponents} />
+                ) : (
+                  <Grid container spacing={4}>
                     {project.sections.map((section) => (
                         <Grid key={section.id} item xs={12} lg={12}>
                             <Paper
@@ -193,11 +199,12 @@ export default function ProjectDetail({ project }) {
                             </Paper>
                         </Grid>
                     ))}
-                </Grid>
+                  </Grid>
+                )}
 
                 {/* Back link */}
                 <Box sx={{ mt: 8, mb: 4, textAlign: "center" }}>
-                    <Link href="/projects" passHref legacyBehavior>
+                    <Link href="/projects" style={{ textDecoration: 'none' }}>
                         <Typography
                             sx={{
                                 border: "1px solid rgba(34, 211, 238, 0.4)",
@@ -237,7 +244,21 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
     const slug = params.slug;
     const project = projects.find((p) => p.slug === slug);
+
+    if (!project) {
+        return { props: { project: null } };
+    }
+
+    let mdxContent = null;
+    if (hasMDXContent(project)) {
+        try {
+            mdxContent = await compileMDXFile(project.contentPath);
+        } catch (error) {
+            console.error(`Failed to compile MDX for ${slug}:`, error);
+        }
+    }
+
     return {
-        props: { project },
+        props: { project, mdxContent },
     };
 }
