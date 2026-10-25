@@ -33,15 +33,31 @@ First two are foundational; PPO/SAC are today's workhorses.
   caption="DQN solving LunarLander-v2 in Gymnasium — lands the ship between flags using discrete actions"
 />
 
-Trained on Gymnasium's `LunarLander-v2` — land the ship between flags using discrete actions (fire left/right/main engine). Key implementation details:
+Implemented from **DeepMind's 2015 Nature paper** (*Human-level control through deep reinforcement learning*). The environment is Gymnasium's `LunarLander-v2` (originally OpenAI, now maintained by Farama Foundation) — discrete action space: do nothing, fire left, fire main, fire right engine.
+
+### How DQN Works
+
+DQN learns an **action-value function** $Q(s,a)$ — the expected cumulative reward for taking action $a$ in state $s$ and following the optimal policy thereafter.
+
+- **Q-network**: Neural network approximating $Q(s,a; \theta)$
+- **Optimal Q-function** $Q^*(s,a)$ satisfies the Bellman optimality equation:
+  $$Q^*(s,a) = \mathbb{E}[r + \gamma \max_{a'} Q^*(s', a') \mid s, a]$$
+- **Loss**: Mean squared TD error — $(y - Q(s,a;\theta))^2$ where $y = r + \gamma \max_{a'} Q(s',a';\theta^-)$
+- **Target network** $\theta^-$: Frozen copy of $\theta$, updated periodically for stability
+
+> DQN only works in **discrete action spaces** (outputs Q-value per action). Continuous control requires actor-critic methods (DDPG, SAC, PPO).
+
+### Key Implementation Details
 
 - **Network**: 2 hidden layers (64 units each), ReLU activations
 - **Experience replay**: 100k buffer, batch size 64
 - **Target network**: Updated every 100 steps
 - **Epsilon-greedy**: Linear decay from 1.0 → 0.01 over 500 episodes
 - **Optimizer**: Adam, lr=1e-3
+- **Discount factor**: $\gamma = 0.99$
 
-Converges to ~200+ average reward (solved threshold) in ~400 episodes.
+DQN converges **significantly faster and more reliably** than policy gradients on this environment — consistent with value-based methods excelling in sparse-reward, discrete-action settings where experience replay provides high sample efficiency.
+In my case, 600 episodes was enough to essentially guarantee maximal performance.
 
 ---
 
