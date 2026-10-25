@@ -45,6 +45,43 @@ Converges to ~200+ average reward (solved threshold) in ~400 episodes.
 
 ---
 
+## Policy Gradients on LunarLander-v2
+
+Trained on Gymnasium's `LunarLander-v2` using **REINFORCE with baseline** (policy gradient with value function baseline for variance reduction). Unlike DQN, this directly parameterizes the policy $\pi_\theta(a|s)$ and optimizes via gradient ascent.
+
+### Key Implementation Details
+
+- **Policy network**: 2 hidden layers (64 units), outputs action probabilities via Softmax
+- **Value baseline**: Separate 2-layer MLP predicting $V(s)$ for advantage estimation
+- **Advantage**: $A_t = G_t - V(s_t)$ where $G_t$ is discounted return
+- **Batch size**: 16–64 episodes per update (on-policy, no replay buffer)
+- **Optimizer**: Adam, lr=1e-3 for both policy and value networks
+- **Discount factor**: $\gamma = 0.99$
+
+### Convergence Behavior
+
+> Policy gradients are **far less sample-efficient** than value-based methods. While DQN solves in ~400 episodes, REINFORCE typically requires **~3000 iterations** (each a batch of 16–64 episodes) to reach near-optimal performance.
+
+Common issues observed:
+- Convergence to **local minima** — agent approaches landing pad but crashes
+- High variance in returns across training runs
+- Sensitive to learning rate and baseline quality
+
+This matches known literature: policy gradients excel when samples are cheap to generate, but struggle with sparse-reward environments like LunarLander.
+
+### From REINFORCE to Actor-Critic
+
+The baseline $V(s)$ is essentially a **critic** — this is the simplest actor-critic architecture. Modern algorithms build on this:
+
+| Algorithm | Key Innovation |
+|-----------|----------------|
+| **REINFORCE** | Monte Carlo returns, high variance |
+| **Actor-Critic** | Learned baseline $V(s)$, lower variance |
+| **PPO** | Clipped probability ratios, trust region |
+| **SAC** | Maximum entropy, automatic temperature tuning |
+
+The loss shifts from log-prob × return (REINFORCE) to clipped surrogate objectives (PPO) or entropy-regularized objectives (SAC).
+
 ---
 
 ## What's Next
