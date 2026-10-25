@@ -56,6 +56,7 @@ export const projects = [
       repo: 'https://github.com/pmistry9597/Ray_Trace-Rust',
       demo: null,
     },
+    contentPath: 'content/projects/ray-tracer-rust.mdx',
     sections: [
       {
         id: 'overview',

@@ -1,0 +1,240 @@
+# Ray Tracer — CPU Path Tracer in Rust
+
+A **CPU-based unidirectional path tracer** written from scratch in Rust with k-d tree acceleration, mesh loading (glTF), PBR materials, and real-time progressive rendering.
+
+[View Repo](https://github.com/pmistry9597/Ray_Trace-Rust)
+
+---
+
+## Overview
+
+Built to combine **learning Rust**, **computer graphics**, and **a love of airplanes/space** into one project. The tracer produces photorealistic renders of complex scenes including the Space Shuttle Discovery, James Webb Space Telescope, biplanes, and more — all defined via YAML scene files.
+
+---
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| **Monte Carlo Path Tracing** | Unidirectional with Russian roulette termination |
+| **glTF Mesh Loading** | Load complex models (Discovery, JWST, A380, biplane, Voyager) |
+| **k-d Tree Acceleration** | **60x speedup** on complex meshes |
+| **Parallel Rendering** | Rayon-based multi-threaded pixel computation |
+| **YAML Scene Definition** | Dynamic scene building — cameras, materials, meshes, skyboxes |
+| **Real-time Progressive UI** | Watch render converge, stop when satisfied |
+| **Thin Lens Camera** | Depth of field via lens simulation |
+| **PBR Materials** | Metallic-roughness workflow with normal mapping |
+
+---
+
+## Architecture
+
+### Rendering Pipeline
+
+1. **Scene Parse** → YAML → typed scene graph
+2. **Acceleration Build** → k-d tree over all primitives (triangles + spheres)
+3. **Ray Generation** → Camera + thin lens → primary rays (parallelized via Rayon)
+4. **Path Tracing** → Recursive bounce with:
+   - Direct light sampling (optional)
+   - BSDF sampling (diffuse/specular/glass)
+   - Russian roulette after `assured_depth` bounces
+5. **Progressive Accumulation** → Running average per pixel, displayed live
+
+---
+
+## Key Technical Decisions
+
+### 1. **k-d Tree Acceleration** — 60x Speedup over Naive Intersection
+
+**Change:** Built a k-d tree with Surface Area Heuristic (SAH) splitting to replace naive O(n) intersection testing. The tree recursively partitions space along axis-aligned planes, with a single-node optimization that treats leaf nodes containing few primitives as a flat list.
+
+**Why:** Naive intersection testing against every triangle in a mesh is prohibitively slow for complex models. The Space Shuttle Discovery (~50k triangles) went from unusable to interactive render times. SAH-based splitting minimizes expected traversal cost, and the single-node optimization avoids recursion overhead for small leaf nodes.
+
+**Why not BVH?:** Given that I was rendering a static scene with no objects changing/moving, k-d trees offer a much greater performance leap compared to BVH.
+
+---
+
+### 2. **Reference-Based Scene Graph** — No Data Duplication
+
+**Change:** Scene primitives (triangles, spheres, mesh instances) are stored once in a central arena and referenced by `&Primitive` throughout the acceleration structure and render loop, rather than cloning vertex/index data per triangle.
+
+**Why:** A mesh with 50k triangles shares a single vertex buffer and index buffer. Copying that data per triangle would explode memory usage and cache pressure. References avoid duplication entirely. Using `Arc<Mutex<>>` would add atomic reference counting and lock contention — unnecessary since the scene is immutable after build.
+
+---
+
+### 3. **PBR Metallic-Roughness + Normal Mapping** — glTF Compatibility
+
+**Change:** Implemented the Disney BRDF (GGX normal distribution, Smith G2 geometry, Schlick Fresnel) with metallic-roughness parameterization matching the glTF 2.0 spec, plus tangent-space normal map sampling.
+
+**Why:** glTF is the de facto standard for 3D asset exchange. All the showcase models (Discovery, JWST, A380, etc.) are glTF files authored with PBR materials. Without proper metallic-roughness and normal mapping, these models render as flat, unlit geometry — defeating the purpose of loading real assets.
+
+---
+
+### 4. **Skybox via Cube Map** — Environment Lighting + Background
+
+**Change:** Added a `DistantCubeMap` scene entity that samples a 6-face cube map for rays that escape the scene (miss all geometry). The cube map is defined in YAML with per-face image paths and UV scaling/orientation.
+
+**Why:** Two birds, one stone: (1) provides a realistic background (space, sky) instead of black void, and (2) acts as an environment light source — the cube map contributes radiance to diffuse/specular BSDFs via importance sampling or direct evaluation, giving realistic image-based lighting for free.
+
+---
+
+### 5. **Numerical Robustness Fixes** — Shadow Acne, NaN, Epsilon Handling
+
+**Change:** Systematic handling of floating-point edge cases: (a) ray-origin offset by `EPS` along normal after intersection to prevent self-intersection (shadow acne), (b) clamping intersection distances to `[EPS, INFINITY)` to avoid NaN propagation, (c) careful ordering of `f32` comparisons so `INFINITY < NAN` holds for priority queues, (d) tolerance thresholds for plane/triangle intersection tests.
+
+**Why:** Path tracing is a numerical minefield. Self-intersection causes "acne" artifacts on smooth surfaces. NaNs from degenerate intersections poison the entire pixel accumulator. `f32` comparison quirks break k-d tree traversal ordering. These fixes aren't glamorous but they're the difference between a renderer that produces clean images and one that flickers with artifacts.
+
+---
+
+## How to Use — Scene Definition (YAML)
+
+Create a YAML file to describe a scene to render (check the `schemes/` folder for examples).
+
+### 1. Basic Settings
+
+```yaml
+render_info:
+  width: 1200
+  height: 600
+  samps_per_pix: 100000  # set high, stop the program when satisfied
+  kd_tree_depth: 15      # tune for mesh complexity (more primitives → deeper tree)
+  rad_info:
+    debug_single_ray: false
+    dir_light_samp: false
+    russ_roull_info:
+      assured_depth: 5       # minimum path bounces before Russian roulette
+      max_thres: 0.5         # termination probability after assured_depth
+```
+
+**Parameters:**
+- `width` / `height` — output resolution in pixels
+- `samps_per_pix` — samples per pixel (progressive; stop manually when converged)
+- `kd_tree_depth` — k-d tree max depth; deeper = better culling for dense meshes
+- `rad_info.debug_single_ray` — render exactly one ray for debugging
+- `rad_info.dir_light_samp` — enable direct light sampling (optional)
+- `russ_roull_info.assured_depth` — guaranteed bounces before termination can occur
+- `russ_roull_info.max_thres` — probability threshold for Russian roulette termination
+
+---
+
+### 2. Camera
+
+```yaml
+cam:
+  o: [0, -15, -30]           # camera position (world space)
+  view_eulers: [-0.6, 0.1, 0] # Euler angles (rad) — rotates the view direction
+  d: [0, 0, 6]               # render screen offset from camera position
+  up: [0, 1, 0]              # up vector (must be unit length)
+  screen_width: 10.0         # in-scene width of image plane
+  screen_height: 5.0         # in-scene height of image plane
+  # screen_width/screen_height ratio should match width/height above
+```
+
+**Notes:**
+- `view_eulers` rotates the default view direction; easier than specifying a look-at target
+- `screen_width` / `screen_height` are world-space dimensions of the virtual film plane
+- The aspect ratio of `screen_width : screen_height` must match `width : height`
+
+---
+
+### 3. Scene Members
+
+All geometry goes under `scene_members:` as a list of tagged entities.
+
+#### Spheres
+
+```yaml
+scene_members:
+  - !Sphere
+      c: [4, 2, -2]               # center (x, y, z)
+      r: 4                        # radius
+      coloring: !Solid [.999,0.5,0.2]  # RGB color (0–1)
+      mat:
+        divert_ray: Diff          # Diff | Spec | Glass
+        emissive: [1.0, 1.0, 1.0] # optional — makes the sphere a light source
+```
+
+**Material options:**
+- `Diff` — Lambertian diffuse
+- `Spec` — perfect specular (mirror)
+- `Glass` — dielectric transmission (refraction + reflection)
+- `emissive` — RGB radiance for area lights (works with any material)
+
+#### Triangles
+
+```yaml
+  - !FreeTriangle
+      verts: [[-5, -2, -20], [5, -2, -20], [0, 5, -20]]  # 3 vertices
+      norm: [0, 0, 1]                                      # face normal
+      rgb: [.999, .5, .5]                                  # solid color
+      mat:
+        divert_ray: Spec
+```
+
+- `verts` — three 3D points in counter-clockwise order
+- `norm` — geometric normal (used for shading if no vertex normals)
+- `rgb` — solid color (alternative to `coloring: !Solid`)
+
+#### Meshes (glTF) 💥
+
+```yaml
+  - !Model
+      path: "../../../assets/discovery_space_shuttle/scene.gltf"
+      # transforms to apply to model in the scene
+      euler_angles: [0, 1.5, 0]   # rotation (rad)
+      uniform_scale: 1            # scale factor
+      translation: [0, 1, 0]      # position offset
+```
+
+**Notes:**
+- Loads `.gltf` files with PBR materials, textures, and normal maps
+- Some glTF features may not be fully implemented; showcase models work correctly
+- Transforms apply to the entire model hierarchy (root node only currently)
+
+#### Skybox (Cube Map) 🌠
+
+```yaml
+  - !DistantCubeMap
+      # last two numbers are U/V texture coordinate scalings
+      neg_x: ["../../../assets/skybox/right.jpg", 1.0, 1.0]
+      pos_x: ["../../../assets/skybox/left.jpg", 1.0, -1.0]
+      neg_y: ["../../../assets/skybox/bottom.jpg", 1.0, 1.0]
+      pos_y: ["../../../assets/skybox/top.jpg", -1.0, 1.0]
+      neg_z: ["../../../assets/skybox/back.jpg", -1.0, 1.0]
+      pos_z: ["../../../assets/skybox/front.jpg", -1.0, -1.0]
+```
+
+**Format:** Each face is `[path, u_scale, v_scale]` — scales control texture tiling/orientation.
+
+---
+
+### 4. Run It
+
+```bash
+# Build optimized (debug is extremely slow)
+cargo build --release
+
+# With UI (live progressive preview)
+./ray_trace_rust ../../schemes/james_webb.yml
+
+# Headless (no UI, faster)
+./ray_trace_rust ../../schemes/james_webb.yml no_ui
+```
+
+> **Tip:** Set `samps_per_pix` high and stop the program manually when the image looks converged.
+
+---
+
+## Reference Material
+
+- [smallpt](https://www.kevinbeason.com/smallpt/) — minimal C++ path tracer, starting template
+- [Scratchapixel](https://www.scratchapixel.com/) — ray-triangle intersection, sampling math
+- [Kd-tree Traversal for Ray Tracing](https://onlinelibrary.wiley.com/doi/10.1111/j.1467-8659.2010.01844.x) — SAH traversal, stackless implementation
+
+---
+
+## Demo
+
+[View Repo](https://github.com/pmistry9597/Ray_Trace-Rust)
+
+> *Render times are slow in debug — always use `cargo build --release`.*
