@@ -101,6 +101,7 @@ export const projects = [
       repo: 'https://github.com/pmistry9597/Climate-Hack-2022',
       demo: null,
     },
+    contentPath: 'content/projects/climate-hack-2022.mdx',
     sections: [
       {
         id: 'overview',

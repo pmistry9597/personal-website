@@ -1,0 +1,115 @@
+# Climate Hack 2022 — 14th Place Solution
+
+Placed **14th out of ~130 teams** with a score of **0.76036** in the Climate Hack 2022 satellite imagery prediction challenge.
+
+[Climate Hack Website](https://climatehack.ai)
+
+---
+
+## The Problem
+
+Predict **24 frames** (2 hours) of satellite weather imagery from **12 input frames** (1 hour of history). Images at 12 frames/hour — effectively video prediction for weather satellite imagery.
+
+---
+
+## Rationale: Why These Architectures?
+
+I tried a progression of architectures, learning what works (and what doesn't) for spatiotemporal video prediction. Time was tight — I learned about this hackathon VERY late — so I iterated fast. Essentially anything that could handle any sort of sequential image data was viable.
+I was led astray by the organizers into trying attention-based models — big mistake!. I didn't learn how hard these models are to train until well into development.
+
+---
+
+## Architectures I Tried
+
+### 1. Basic Dense Model — *Absolute Garbage* 🗑️
+
+Just a few dense layers with sigmoid output and a scaling factor (the default used ReLU which made no sense for bounded imagery).
+
+**Score: ~0.61** — baseline only.
+
+---
+
+### 2. Attention-Based Approaches
+
+| Approach | Result | Notes |
+|----------|--------|-------|
+| **Perceiver / Perceiver IO** | ❌ Failed | Couldn't get working on a dummy classification problem, let alone video prediction. Discovered LAMB optimizer later — might have helped with large batch sizes. |
+| **Transformers + WGAN-GP Encoder/Decoder** | ❌ Abandoned | Ambitious: WGAN-GP encoder → latent space → transformer for temporal prediction. Encoder/decoder shared per frame. Similar to Perceiver's latent transformer. Abandoned when VRAM exploded with my setup. |
+
+---
+
+### 3. CNN-Based Approaches
+
+#### Stupid Simple Conv
+Basic conv → conv transpose encoder-decoder. No skip connections.
+
+**Score: ~0.68** — surprisingly decent for a "brain-dead" baseline.
+
+---
+
+### UNets — The Winner 🏆
+
+UNet architecture with staged downsampling/upsampling and **skip connections** between corresponding encoder/decoder layers. This enables information flow across scales — critical for preserving spatial details in video prediction.
+
+| Variant | Score | Notes |
+|---------|-------|-------|
+| **Original UNet** (adapted) | ~0.74 | 2nd place (among my own  models) — adapted standard UNet for spatiotemporal prediction |
+| **UNetDeep** | **0.76036** 🏆 | **Best score** — deeper convolutions in bottleneck/latent section |
+
+> **Why UNets won:** Skip connections preserve high-frequency spatial details that pure encoder-decoder loses. The deeper bottleneck in UNetDeep captures more abstract temporal patterns without losing spatial fidelity.
+
+---
+
+## Key Technical Decisions
+
+### 1. **LAMB Optimizer**
+Discovered mid-hackathon. Enables **large batch sizes with higher learning rates** — critical for transformer/Perceiver architectures I couldn't make work in time. Would revisit with LAMB.
+
+### 2. **Skip Connections Are Non-Negotiable**
+The jump from Simple Conv (0.68) → UNet (0.74+) proves skip connections are essential for preserving spatial structure in video prediction.
+
+### 3. **UNetDeep Bottleneck**
+Deeper convolutions in the latent space capture more abstract temporal dynamics without losing spatial resolution — the key to 0.76036.
+
+### 4. **No N-Body / Attention in Time**
+The winning model uses pure CNN with skip connections. Attention/Transformers need LAMB + more VRAM + time I didn't have.
+
+---
+
+## Project Structure (Repo Organization)
+
+```
+├── submission/           # Final submission files
+├── optim/                # LAMB optimizer implementation
+├── old-or-danger/        # Setup scripts, dangerous ops
+├── SOTA/                 # Best models + params
+└── [model folders]/      # Various architecture attempts
+```
+
+> **Note:** Model weights not uploaded (files too large for GitHub free tier). Parameters stored in `SOTA/` folder locally.
+
+---
+
+## Results Summary
+
+| Model | Score | Rank |
+|-------|-------|------|
+| Dense (sigmoid) | 0.61 | Baseline |
+| Simple Conv | ~0.68 | - |
+| UNet (standard) | ~0.74 | 2nd best |
+| **UNetDeep** | **0.76036** | **14th / 130** 🏆 |
+
+---
+
+## What I'd Do Differently
+
+1. **Start simple, iterate** — I had the right idea with my *Basic Dense Model* baseline model. I should have branched to the obvious choice of adding convolutional layers before trying any fancy architectures.
+2. **Just use frameworks man** — I was doing a lot of hyperparameter tuning manually. I should have simply delegated to a framework like RayTune.
+
+---
+
+## Demo
+
+[View Repo](https://github.com/pmistry9597/Climate-Hack-2022)
+
+> *Model weights not uploaded — files too large for GitHub free tier. Parameters stored in `SOTA/` folder locally.*
