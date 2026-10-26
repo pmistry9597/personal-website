@@ -1,6 +1,6 @@
 /**
  * ProjectCarousel - MDX Component for image carousels
- * Features: circular navigation, next-image peek, view-all grid, touch swipe, keyboard nav, a11y
+ * Features: circular navigation, next-image peek, touch swipe, keyboard nav, a11y
  */
 import { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './ProjectCarousel.module.css';
@@ -10,7 +10,6 @@ function ProjectCarousel({
   defaultIndex = 0,
   showThumbnails = true,
   showArrows = true,
-  showViewAllToggle = true,
   className = '',
   woof,
 }) {
@@ -20,11 +19,9 @@ function ProjectCarousel({
     if (Array.isArray(images)) {
       validImages = images;
     } else if (typeof images === 'string') {
-      // Try JSON parse first
       const parsed = JSON.parse(images);
       validImages = Array.isArray(parsed) ? parsed : [];
     } else if (images && typeof images === 'object') {
-      // Handle case where MDX passes array-like object
       validImages = Object.values(images).filter(v => v && typeof v === 'object');
     }
   } catch (e) {
@@ -33,39 +30,64 @@ function ProjectCarousel({
   }
 
   const [currentIndex, setCurrentIndex] = useState(defaultIndex);
-  const [viewMode, setViewMode] = useState('carousel');
-  const [isAnimating, setIsAnimating] = useState(false);
   const [touchStart, setTouchStart] = useState(null);
   const [announcement, setAnnouncement] = useState('');
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const trackRef = useRef(null);
   const carouselRef = useRef(null);
   const animationTimeoutRef = useRef(null);
+  const isAnimatingRef = useRef(false);
 
   const imageCount = validImages.length;
   const nextIndex = (currentIndex + 1) % imageCount;
-
-  useEffect(() => {
-    if (defaultIndex >= 0 && defaultIndex < imageCount) {
-      setCurrentIndex(defaultIndex);
-    }
-  }, [defaultIndex, imageCount, validImages]);
 
   useEffect(() => {
     setAnnouncement(`Image ${currentIndex + 1} of ${imageCount}`);
   }, [currentIndex, imageCount]);
 
   const goTo = useCallback((index) => {
-    if (isAnimating || index === currentIndex || imageCount === 0) return;
+    if (imageCount === 0 || isAnimatingRef.current) return;
     const clamped = ((index % imageCount) + imageCount) % imageCount;
-    setIsAnimating(true);
     setCurrentIndex(clamped);
+    isAnimatingRef.current = true;
+    setIsAnimating(true);
     if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
-    animationTimeoutRef.current = setTimeout(() => setIsAnimating(false), 400);
-  }, [currentIndex, imageCount, isAnimating]);
+    animationTimeoutRef.current = setTimeout(() => { 
+      isAnimatingRef.current = false; 
+      setIsAnimating(false); 
+    }, 400);
+  }, [imageCount]);
 
-  const goNext = useCallback(() => goTo(currentIndex + 1), [currentIndex, goTo]);
-  const goPrev = useCallback(() => goTo(currentIndex - 1), [currentIndex, goTo]);
+  const goNext = useCallback(() => {
+    if (imageCount === 0 || isAnimatingRef.current) return;
+    setCurrentIndex(prev => {
+      const next = (prev + 1) % imageCount;
+      isAnimatingRef.current = true;
+      setIsAnimating(true);
+      if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = setTimeout(() => { 
+        isAnimatingRef.current = false; 
+        setIsAnimating(false); 
+      }, 400);
+      return next;
+    });
+  }, [imageCount]);
+
+  const goPrev = useCallback(() => {
+    if (imageCount === 0 || isAnimatingRef.current) return;
+    setCurrentIndex(prev => {
+      const prevIdx = (prev - 1 + imageCount) % imageCount;
+      isAnimatingRef.current = true;
+      setIsAnimating(true);
+      if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = setTimeout(() => { 
+        isAnimatingRef.current = false; 
+        setIsAnimating(false); 
+      }, 400);
+      return prevIdx;
+    });
+  }, [imageCount]);
 
   useEffect(() => {
     const handleKey = (e) => {
@@ -76,13 +98,12 @@ function ProjectCarousel({
         case 'ArrowLeft': e.preventDefault(); goPrev(); break;
         case 'Home': e.preventDefault(); goTo(0); break;
         case 'End': e.preventDefault(); goTo(imageCount - 1); break;
-        case 'Escape': if (viewMode === 'grid') setViewMode('carousel'); break;
         default: return;
       }
     };
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
-  }, [goNext, goPrev, goTo, imageCount, viewMode]);
+  }, [goNext, goPrev, goTo, imageCount]);
 
   const handleTouchStart = (e) => {
     setTouchStart({ x: e.touches[0].clientX, time: Date.now() });
@@ -113,70 +134,6 @@ function ProjectCarousel({
 
   const nextImage = validImages[nextIndex];
 
-  if (viewMode === 'grid') {
-    return (
-      <div 
-        ref={carouselRef}
-        className={`${styles.carousel} ${styles.gridMode} ${className}`}
-        role="region"
-        aria-roledescription="carousel"
-        aria-label="Project screenshots"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        <div className={styles.liveRegion} aria-live="polite" aria-atomic="true">
-          {announcement}
-        </div>
-
-        {showViewAllToggle && (
-          <button
-            className={styles.viewAllToggle}
-            onClick={() => setViewMode('carousel')}
-            aria-label="Switch to carousel view"
-          >
-            Carousel
-          </button>
-        )}
-
-        <div className={styles.viewport}>
-          <div className={styles.gridTrack} ref={trackRef} role="list">
-            {validImages.map((img, i) => (
-              <div key={img.src || i} className={styles.gridSlide} role="listitem">
-                <div className={styles.gridSlideImageWrapper}>
-                  <img
-                    src={img.src || getPlaceholder(i)}
-                    alt={img.alt}
-                    className={styles.gridSlideImage}
-                    loading={i === currentIndex || i === nextIndex ? 'eager' : 'lazy'}
-                  />
-                  {img.caption && (
-                    <div className={styles.gridSlideCaption}>{img.caption}</div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {showThumbnails && (
-          <div className={styles.dotsContainer} role="tablist" aria-label="Image navigation">
-            {images.map((_, i) => (
-              <button
-                key={i}
-                className={`${styles.dot} ${i === currentIndex ? styles.dotActive : ''}`}
-                onClick={() => { setViewMode('carousel'); goTo(i); }}
-                role="tab"
-                aria-selected={i === currentIndex}
-                aria-label={`Go to image ${i + 1}`}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  }
-
   const trackTransform = `translateX(-${currentIndex * 100}%)`;
 
   return (
@@ -193,16 +150,6 @@ function ProjectCarousel({
       <div className={styles.liveRegion} aria-live="polite" aria-atomic="true">
         {announcement}
       </div>
-
-      {showViewAllToggle && (
-        <button
-          className={styles.viewAllToggle}
-          onClick={() => setViewMode('grid')}
-          aria-label="View all images in grid"
-        >
-          View All
-        </button>
-      )}
 
       <div className={styles.viewport}>
         <div
