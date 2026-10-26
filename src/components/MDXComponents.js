@@ -234,6 +234,7 @@ const Hr = (props) => (
 );
 
 import { ProjectImage } from './mdx/ProjectImage';
+import ProjectCarousel from './mdx/ProjectCarousel';
 
 export const MDXComponents = {
   // ---------------- Default components ----------------
@@ -258,6 +259,6 @@ export const MDXComponents = {
 
   // ---------------- Custom components ----------------
   ProjectImage,
-  // ProjectCarousel,
+  ProjectCarousel,
   // Callout,
 };
