@@ -4,43 +4,41 @@ export const projects = [
     title: 'TrackMe Fitness',
     status: 'Completed',
     summary:
-      'A polyglot full-stack mobile app that addresses the unique needs of athletes that combine resistance training with endurance running. Repo is private due to possible monetization at later time.',
+      'An offline-first full-stack mobile workout tracker: Tauri + React client, Axum + Postgres server, custom background sync engine. Unifies lifting + running. Repo is private for now.',
     cover: null,
-    tech: [['Rust'], ['Typescript'], ['REST'], ['Security'], ['Tokio'], ['Async Rust']],
+    tech: [['Rust'], ['Typescript'], ['REST'], ['Security'], ['Tokio'], ['Async Rust'], ['Tauri'], ['Axum']],
     links: {
-      // repo: 'https://github.com/pmistry9597/Ray_Trace-Rust',
       demo: null,
     },
+    contentPath: 'content/projects/trackme-fitness.mdx',
     sections: [
       {
         id: 'overview',
         title: 'Overview',
         type: 'text',
         body:
-          'I built this ray tracer from scratch in Rust to learn about computer graphics and low-level optimization. It supports diffuse and specular materials, soft shadows via area lights, and a bounding volume hierarchy (BVH) for fast intersection culling. Rendering is multi-threaded using Rayon.',
+          'TrackMe Fitness is an offline-first mobile workout tracker that unifies lifting and running in a single app. Built solo as a deliberate deep dive into Rust, async Rust, the Tauri ecosystem, and designing a real client/server system from the ground up.',
       },
       {
         id: 'architecture',
         title: 'Architecture',
         type: 'text',
         body:
-          'The codebase is split into three crates:\n\n- `core` — vector math, ray primitives, and color math\n- `bvh` — bounding volume hierarchy construction and traversal\n- `cli` — command-line interface, image output, and scene parsing\n\nRays are traced recursively with a maximum depth to prevent infinite reflection loops. The BVH reduces the per-pixel intersection cost from O(n) to O(log n) over scene geometry.',
+          'Client (Tauri mobile app): React + MUI webview, Rust Tauri commands own all HTTP/sync logic, local SQLite database, background sync worker (tokio interval + Notify).\n\nServer (Rust): Axum REST API with Tower middleware (CORS, tracing), JWT extractor + Argon2 login, Postgres via sqlx.\n\nKey idea: The webview never talks to the network. UI only invokes Rust commands; Rust owns all HTTP, token handling, and sync. Security-sensitive logic stays in typed, testable Rust.',
       },
       {
         id: 'planning',
         title: 'Planning',
         type: 'text',
         body:
-          'Development was split into milestones:\n1. Basic ray-sphere intersection and PPM output\n2. Material system (Lambertian, metal, dielectric)\n3. BVH acceleration structure\n4. Multi-threaded rendering and CLI polish\n\nEach milestone was tested with a rendered scene before moving to the next.',
+          'Development followed deliberate complexity sequencing across 8 phases:\n1. Client prototype — UI + data modeling only\n2. Local persistence — SQLite + data model (prove offline works)\n3. Backend + Sync — Axum + Postgres + batched push/pull (no auth)\n4. Local integration — Docker Postgres + native server\n5. Temporary Auth — JWT extractor + temp token endpoint (prove isolation)\n6. Real Login — Argon2 /auth/login, demo accounts\n7. Sign-out + Polish — wipe local data, immediate sync, cycle signaling\n8. Mobile + Deploy — phone build, Render deploy, multi-account test\n\nEach phase isolated variables so failures had a single cause.',
       },
       {
         id: 'demo',
         title: 'Demo',
         type: 'links',
-        body: 'Repo is currently being held private due to possible monetization at a future point.',
-        links: [
-          // { label: 'View Repo', url: 'https://github.com/pmistry9597/Ray_Trace-Rust' },
-        ],
+        body: 'Repository is private (possible future monetization). Screenshots in the project page demonstrate the running application. Deployed backend runs on Render under a custom subdomain; mobile app builds and runs on physical devices against it.',
+        links: [],
       },
     ],
   },
