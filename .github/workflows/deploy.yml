@@ -1,0 +1,36 @@
+name: Build and deploy static site using containers - necessary for playwright chrome headless
+
+on:
+  push:
+    branches:
+      - master # whenever pushed to this branch, execute build and deploy
+
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # vm image name on github
+
+    container: # actual docker image - needed for chrome headless for playwright
+      image: mcr.microsoft.com/playwright:v1.64.0-noble
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      # Dependencies will install instantly, and Playwright browsers are already there
+      - name: Install dependencies
+        run: npm ci
+
+      # Next.js will use the container's pre-installed Chromium to bake your MDX
+      - name: Build Next.js Static Site
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Deploy to Render
+        if: ${{ github.actor != 'nektos' }}
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
+          wait-for-success: true
