@@ -1,0 +1,458 @@
+# TrackMe Fitness — Offline-First Full-Stack Workout Tracker
+
+**Tauri + React client, Axum + Postgres server, custom background sync engine.**
+
+> *Repository is private — possible future monetization*
+
+---
+
+## Overview
+
+TrackMe Fitness is an **offline-first mobile workout tracker** that unifies lifting and running in a single app. Built solo as a deliberate deep dive into Rust, async Rust, the Tauri ecosystem, and designing a real client/server system from the ground up.
+
+**The problem:** Most fitness apps treat running and strength training as separate worlds. I wanted one unified tracker so historical effort and recent training load live in the same place — making it possible to plan sensibly and avoid overtraining injuries.
+
+**The engineering motivation:** My previous large Rust project (a ray tracer) had a single computational goal. I wanted the opposite: a long-lived, stateful, networked system with users, persistence, auth, and failure modes that only show up in real deployments.
+
+### What It Does
+
+- **Log lifting sessions and runs** in a single unified app
+- **Works offline** — all data lives in a local SQLite database
+- **Syncs automatically in the background** to a central Postgres database via REST API
+- **Multi-device** — log in on any device and see the same data; edits propagate across devices
+- **Secure authentication** with Argon2 password hashing and JWT-based sessions
+- **Clean sign-out** that wipes local user data and returns to login state
+
+---
+
+## Screenshots
+
+<ProjectCarousel
+  images='[
+    {"src":"/images/trackme-fitness/dash.png","alt":"Dashboard","caption":"Unified dashboard — lifting + running","scale":0.25},
+    {"src":"/images/trackme-fitness/login.png","alt":"Login screen","caption":"Secure authentication with Argon2 + JWT","scale":0.25},
+    {"src":"/images/trackme-fitness/lifting.png","alt":"Lifting session","caption":"Lifting tracker with sets/reps/RPE","scale":0.25},
+    {"src":"/images/trackme-fitness/running.png","alt":"Running session","caption":"Running tracker with distance/pace","scale":0.25},
+    {"src":"/images/trackme-fitness/month.png","alt":"Month view","caption":"Monthly training overview","scale":0.25},
+    {"src":"/images/trackme-fitness/backend_status.png","alt":"Backend status","caption":"Deployed Axum backend on Render","fit":"contain"}
+  ]'
+  defaultIndex={0}
+  showThumbnails={true}
+  height="600px"
+/>
+
+---
+
+## Highlights
+
+| Area | What I Built |
+|------|--------------|
+| **Offline-first sync engine** | Background worker pushes batched local changes and pulls server state, with per-row success/failure reporting so one bad row never fails a whole batch |
+| **Production deployment** | Axum backend deployed to Render on a custom subdomain, phone app talking to it |
+| **Deliberate sequencing** | Complexity added in stages: simple full-table sync first, auth layered on after sync was proven |
+| **Async optimization** | Parts of the full-stack app heavily optimized — up to 4x wall time improvement — by restructuring async Rust (i.e. setting up multiple futures and awaiting all at once vs. sequentially) |
+| **Concurrency safety** | Sync cycles guarded by an atomic flag with an RAII `Drop` guard, so overlapping syncs are impossible and a panic can never leave the guard stuck |
+| **Startup coordination** | App initialization modeled as an explicit `InitStage` state machine broadcast over `tokio::sync::watch` channels |
+| **Responsive sync** | Writes trigger immediate sync via `tokio::sync::Notify`; UI waits on a cycle-completed signal before showing fresh data |
+| **Security** | Argon2 password hashing, constant-work login (dummy-hash verification for unknown users), identical errors for bad username vs. bad password, JWT-derived identity on every endpoint |
+| **Data isolation** | `user_id` taken only from verified JWT, never from request payloads. Every endpoint filters by it; foreign keys cascade on delete |
+
+---
+
+## Architecture
+
+### System Diagram
+
+```mermaid
+flowchart LR
+    subgraph Client["Client (Tauri mobile app)"]
+        UI["React + MUI UI (webview)"]
+        CMD["Rust Tauri commands (all HTTP logic lives here)"]
+        DB[("SQLite (local, offline-first)")]
+        W["Background sync worker (tokio interval + Notify)"]
+        UI <-->|invoke| CMD
+        CMD <--> DB
+        W <--> DB
+        W --> CMD
+    end
+
+    subgraph Server["Server (Rust)"]
+        AX["Axum REST API (Tower: CORS, tracing)"]
+        AUTH["JWT extractor + Argon2 <br /> auth guard"]
+        PG[("Postgres (sqlx)")]
+        AX --- AUTH
+        AX <--> PG
+    end
+
+    CMD <-->|"HTTPS: /auth/login, /sync/push, pull"| AX
+```
+
+**Key idea:** The webview never talks to the network. The UI only invokes Rust commands, and Rust owns all HTTP, token handling, and sync. This keeps security-sensitive logic in typed, testable Rust rather than scattered through frontend code.
+
+### Sync Flow
+
+```mermaid
+sequenceDiagram
+    participant U as UI
+    participant L as Local SQLite
+    participant W as Sync Worker
+    participant S as Axum API
+    participant P as Postgres
+
+    U->>L: Write (row marked pending / pending_delete)
+    U->>W: Notify (sync now)
+    W->>S: POST /api/v1/sync/push (batched changes)
+    S->>P: Upsert scoped by JWT user_id
+    S-->>W: Per-row success / failure
+    W->>L: Mark rows synced
+    W->>S: Pull latest state
+    S-->>W: Full-table response
+    W->>L: Apply remote state
+    W-->>U: Cycle-completed signal, UI refreshes
+```
+
+---
+
+## Tech Stack
+
+**Client**
+- Tauri (mobile), Rust backend layer
+- React + TypeScript + MUI
+- SQLite via `sqlx`
+- Tokio
+
+**Server**
+- Rust, Axum, Tokio
+- Postgres via `sqlx`
+- Tower middleware (`CorsLayer`, `TraceLayer`)
+- `argon2` for password hashing, JWT for sessions
+- Error handling: `thiserror` for request-handling errors mapped to HTTP responses, `anyhow` for startup/pre-server failures
+
+**Infrastructure**
+- Docker Compose for local Postgres (Axum runs natively during development)
+- Render for deployed backend
+
+---
+
+## Deep Dives
+
+### 1. Offline-First Sync Engine
+
+Every local row carries a `sync_status` column constrained to `synced`, `pending`, or `pending_delete`, enforced with a SQL `CHECK`. The soft-delete state means deletions are pushed to the server and a confirmation must be received before the row is removed locally.
+
+Local changes go to the server in a **single batched endpoint** (`POST /api/v1/sync/push`) that returns **per-row results**. This avoids chatty per-record requests and lets the client mark exactly which rows succeeded.
+
+**Pulling rows by sync flag** — near beginning of sync cycle:
+```rust
+pub async fn pull_pending_sessions(pool: &SqlitePool) -> SyncCycleResult<Vec<SessionLocalEntry>> {
+    let sessions: Vec<SessionLocalEntry> = sqlx::query_as(
+            "SELECT * FROM sessions
+                WHERE sync_status = 'pending'"
+        )
+        .fetch_all(pool)
+        .await
+        .map_err(|err| SyncCycleError::SQLxError(err.to_string()))?;
+
+    Ok(sessions)
+}
+
+pub async fn pull_delete_pending_sessions(pool: &SqlitePool) -> SyncCycleResult<Vec<SessionId>> {
+    let session_ids: Vec<SessionId> = sqlx::query_as(
+            "SELECT id FROM sessions
+                WHERE sync_status = 'pending_delete'"
+        )
+        .fetch_all(pool)
+        .await
+        .map_err(|err| SyncCycleError::SQLxError(err.to_string()))?;
+
+    Ok(session_ids)
+}
+
+...
+```
+
+During a sync cycle, data is pulled for each data type (in this case sessions) based on its `sync_status`.
+
+**Modifying flag from response** — occurs at end of sync cycle on client:
+```
+let PushResponse {
+        upserted_ids, // <--- Confirmed modified
+        deleted_ids, // <--- Confirmed deleted
+        failed_ids: _,
+        checksum: backend_checksum,
+    } = push_response; // <--- Response from server during a sync
+
+mark_synced_items(upserted_ids, &pool).await ?; // <--- This is how we mark that sync is completed
+remove_pending_deleted(deleted_ids, &pool).await ?; // <--- Confirmed deleted items can finally be removed
+```
+
+The client applies results row-by-row — failed rows stay `pending` and retry next cycle.
+
+---
+
+### 2. Async Rust Concurrency, Done Carefully
+
+The background worker runs on `tauri::async_runtime::spawn` with a `tokio::time::interval`. Key patterns:
+
+**LoadedState state machine** — shared via `tokio::sync::watch`:
+```rust
+pub enum LoadedState {
+    Starting,
+    Login,
+    Ready,
+}
+
+// In AppState:
+init_tx: watch::Sender<LoadedState>,
+init_rx: watch::Receiver<LoadedState>,
+```
+LoadingState is modified by only by the initialization worker (temporary) and login handler.
+
+**Sync trigger + completion signaling** — `tokio::sync::Notify` + RAII guard:
+```rust
+// In worker loop:
+futures::select! {
+    _res = trigger_cycle.0.notified().fuse() => {
+        interval.reset_immediately();
+    }
+    _res = interval.tick().fuse() => {}
+    ...
+    }
+}
+// RAII guard ensures flag is cleared even on panic
+pub struct SyncCycleCompleted(pub Notify);
+impl SyncCycleCompleted {
+    pub fn notify_guard(&self) -> NotifySyncCompleteGuard<'_> {
+        NotifySyncCompleteGuard { trigger: self }
+    }
+}
+pub struct NotifySyncCompleteGuard<'t> {
+    trigger: &'t SyncCycleCompleted,
+}
+impl<'t> Drop for NotifySyncCompleteGuard<'t> {
+    fn drop(&mut self) {
+        self.trigger.0.notify_waiters();
+    }
+}
+```
+The worker loop checks if a sync is currently being triggered. If a sync is being run, the guard shown underneath will execute a notify even if the function returns early or panics.
+
+---
+
+### 3. Authentication & Data Isolation
+
+**Password hashing** — Argon2 with default params:
+```rust
+let pass_result = argon2.verify_password(login_request.password.as_ref(), &reference_hash)
+    .map_err(|err| match err {
+        password_hash::Error::PasswordInvalid => AppError::ValidationError,
+        _ => AppError::SystemValidationError(err.to_string()),
+    });
+```
+
+**Constant-work login** — dummy hash verification for unknown users:
+```rust
+// Do not return until hashing is done to prevent timing attacks
+let entry = get_user_entry(&login_request.username, &pool).await
+    .map_err(|_| AppError::UserNotFoundError);
+
+let ref_hash_inner = entry.as_ref()
+    .map(|e| &e.password_hash)
+    .unwrap_or(&app_state.dummy_pass_hash); // <--- This is crucial, use dummy hash if user doesn't exist
+
+let argon2 = Argon2::default();
+let reference_hash = PasswordHash::new(ref_hash_inner)
+    .map_err(|err| AppError::SystemValidationError(err.to_string())) ?;
+
+... // Verify password here
+
+// Now hashing is done! We return here to give identical timing in all cases.
+let entry = entry ?;
+pass_result ?; // Extract the error after so we can get a glimpse of previous errors first
+```
+
+**JWT extractor** — custom Axum extractor on every protected endpoint:
+```rust
+pub struct AuthedUser(pub Claims);
+
+impl FromRequestParts<AppState> for AuthedUser {
+    type Rejection = AuthError;
+
+    async fn from_request_parts(
+            parts: &mut axum::http::request::Parts,
+            state: &AppState,
+        ) -> Result<Self, Self::Rejection> 
+    {
+        // Raw extraction only fails if the token is missing
+        let TypedHeader(Authorization( bearer )) = parts
+            .extract::<TypedHeader<Authorization<Bearer>>>()
+            .await
+            .map_err(|_| AuthError::MissingToken) ?;
+
+        let token_data = jsonwebtoken::decode::<Claims>(
+            bearer.token(),
+            &DecodingKey::from_secret(state.jwt_secret.as_bytes()),
+            &Validation::new(Algorithm::HS256)
+        ).map_err(|_| AuthError::InvalidToken) ?;
+        
+        Ok(AuthedUser(token_data.claims))
+    }
+}
+
+// Usage — every protected handler:
+async fn pull_handler(
+        AuthedUser(claims) : AuthedUser, // <--- Use the JWT extractor as a guard
+        State(app_state) : State<AppState>,
+        Json(pull_request) : Json<PullRequest>,
+    ) -> AppResult<Json<PullResponse>>
+{
+    // Now all code here can assume JWT verification was successful
+    ...
+}
+```
+
+**`user_id` never from request body** — every SQL query filters by `auth.user_id`:
+```rust
+// In request handler
+async fn push_handler(
+        AuthedUser(claims) : AuthedUser,
+        State(app_state): State<AppState>,
+        Json(push_request): Json<PushRequest>
+    ) -> AppResult<Json<PushResponse>> 
+{
+    ...
+    let user_id = extract_user_uuid_from_claims(claims) ?; // <--- user id is explicitly from the verified claims struct from JWT
+    ...
+
+    let (upserted_ids, failed_upserted_ids) = perform_upserts(user_id, upserts, &pool).await ?;
+
+    ...
+}
+
+
+// During sql execution during above perform_upserts call
+let results: Vec<_ > = sqlx::query_as!(
+        UpsertResponse,
+        r#"
+        INSERT INTO lift_infos
+            ...
+            ON CONFLICT (id) 
+        DO UPDATE SET
+            lift_type_id = EXCLUDED.lift_type_id,
+            session_id = EXCLUDED.session_id,
+            updated_at = NOW()
+        WHERE
+            lift_infos.user_id = $4 // <--- Don't allow any user to modify anyone else's entries!
+        RETURNING (id);
+    "#,
+    ...
+    &user_id, <--- how user id is plugged into sqlx
+    )
+    .fetch_all(pool)
+    .await?;
+```
+
+---
+
+## Key Technical Decisions
+
+### 1. Full-Table Sync Before Hash-Based Diffing
+
+Deliberate choice during Phase 3 (Backend + Sync, No Auth). Full-table pulls are simple and correct, removing variables while integrating. Diffing is a documented upgrade path — not a missing feature.
+
+### 2. Deliberate Complexity Sequencing (8 Phases)
+
+| Phase | Scope | Isolation Principle |
+|-------|-------|---------------------|
+| 1. Client Prototype | UI + data modeling only | Settle shape *before* storage and business logic |
+| 2. Local Persistence | SQLite + data model | Prove offline works *before* networking |
+| 3. Backend + Sync | Axum + Postgres + batched push/pull | Get fundamental sync working *without* auth |
+| 4. Temporary Auth | JWT extractor + temp token endpoint | Prove JWT guard working *before* real credentials |
+| 5. Real Login | Argon2 `/auth/login`, demo accounts | Replace scaffolding *after* JWT plumbing trusted |
+| 6. Sign-out + Polish | Wipe local data, immediate sync, cycle signaling | Full lifecycle feels solid; ensuring signout + multiple logins on same device is functioning |
+| 7. Mobile + Deploy | Phone build, Render deploy, multi-account test | Architecture holds on real device/host; greatly reduced chance of need for debugging business logic |
+
+### 3. Security-First Auth Design
+
+- **No username enumeration** — identical errors + constant work
+- **Token-only identity** — `user_id` from JWT claim, never request payload
+- **Row-level isolation** — every query scoped by `user_id`; FK cascades on delete
+- **No token persistence on client** — fetched on demand at login
+- **No registration endpoint** — demo accounts seeded directly in DB
+
+---
+
+## What I Learned
+
+- **Async Rust in a real application** — cancellation, shared state, guard types, and channel selection (`watch` vs `Notify` vs atomics) are very different from toy examples
+- **Rust is a viable end-to-end web stack** — for someone proficient in Rust async, the ecosystem (Axum, sqlx, Tower) closes most of the shipping-speed gap with TypeScript
+- **Designing for failure** — per-row sync results, panic-safe guards, and constant-work login all came from asking "what happens when this goes wrong?"
+- **Don't overengineer at the start** — This is a big one for me and honestly I'd need a whole page for this. I'd compare it to making a sculpture — you don't immediately dig for the fine details immediately. That drains a lot of wasted effort, resources, and frankly your own sanity. Instead you make a high-level plan and start iterating on the whole sculpture. Once you see it coming togther, only then do you start planning further and refining the smaller components.
+- **Sequencing is a skill** — deferring complexity on purpose made every integration step debuggable
+
+---
+
+## How I Used AI
+
+I used AI on this project, and I used it deliberately. The goal here was to **learn Rust async, Tauri, and client/server sync patterns by building them myself**, so I set a rule for how AI could and couldn't be involved.
+
+### What I Used AI For
+
+- **High-level planning and design discussion.** Weighing options for sync strategy, auth design, and concurrency primitives, and pressure-testing trade-offs before committing. It worked as a sounding board, not a decision-maker.
+- **Navigating documentation.** Instead of reading through large crate and framework docs to find the one relevant API, I could ask targeted questions and get pointed to the right place quickly.
+
+### What I Did Myself
+
+- **Wrote almost all of the code directly.** The sync worker, the guard types, the Axum handlers, the auth flow, the schema, and the Tauri commands were all written by hand. I did not use AI to generate the implementation.
+- **Made the decisions.** Every call in the [decision log](#key-technical-decisions) was mine, and I pushed back when a suggestion didn't fit my actual constraints. For example, I rejected the conventional `models/` layout in favor of keeping response structs next to their handlers so sensitive fields are auditable at a glance.
+- **Debugged and tested it.** For instance, I verified cross-user isolation by swapping identities and confirming each user only saw their own entries, then tested multiple accounts against the deployed backend and the phone build. The entire app was built this way, with desktop testing to test the interface and ensure data consistency in multiple scenarios.
+
+### Why I Drew the Line There
+
+If AI writes the code, I learn what the AI knows, not what I need to know. Writing it myself is what built real understanding of things like why a `Drop` guard makes a sync flag panic-safe, or when `watch` is the right channel versus `Notify`. Using AI for planning and docs sped me up without taking away the part that teaches.
+
+### How I'd Work Differently on a Team
+
+On a project like this, where the goal is skill-building, I chose to limit AI's role. In a professional setting, the goal is different: shipping quickly and reliably. There I would **use AI for most of the direct code generation** to raise development velocity.
+
+What stays the same is **ownership**. I would still:
+
+- Understand the code and the design decisions well enough to defend them in review
+- Stay an active participant in architecture and trade-off calls, not a passive approver of generated output
+- Catch problems in generated code (concurrency bugs, security gaps, wrong assumptions) because I know how those systems fail
+
+This project is where I built that foundation. Reviewing and steering AI-written code well requires the same understanding as writing it, and I built that by writing this one myself.
+
+---
+
+## What I'd Do Differently
+
+### 1. Choose a Lighter Frontend Stack (Biggest Regret)
+
+React + MUI + Next.js was familiar but heavier than needed. The UI wasn't where I wanted to spend learning time, yet it's where I felt the cost most: much of the client prototype phase went into iterating on the interface, and the stack made each iteration slower. A lighter framework built for fast prototyping would have been the better fit. I'd pick the frontend for iteration speed first, familiarity second.
+
+### 2. Use Finer-Grained State Locking on the Client
+
+The client's shared app state sits behind a single `std::sync::Mutex`, so any worker touching state holds the lock for *all* of it. In practice this is a user-facing app with little compute, so real-world impact is near zero — but in a system with heavier workloads, I'd split state into independently locked pieces or use interior mutability on individual fields.
+
+### 3. Design for Async from the Start
+
+I didn't plan around the rule that a `std` mutex guard shouldn't be held across `.await`. Retrofitting that meant working through compiler constraints after the fact — far more painful than designing for it from day one. In places where a full refactor cost too much time, I fell back on `tokio::block_on`, a trade-off I'd rather have designed away.
+
+---
+
+## Future Work
+
+- **User registration system** — validation, duplicate handling, secure credential creation
+- **More robust statistics tracking** — deeper analysis of training history and recent load, building toward planning around historical effort and avoiding overtraining
+- **Hash-based sync diffing** — per-bucket hashing of `(id, updated_at)` pairs, potentially evolving into hierarchical (Merkle-style) comparison so client only pulls what changed
+- **Hash verification in sync responses** — reusing the same hashing infrastructure
+- **Integration test suite** for API and sync paths
+
+---
+
+## Demo
+
+[View Repo](#) — *private repository*
+
+> **Note:** The source repository is private (possible future monetization). Screenshots above demonstrate the running application. The deployed backend runs on Render under a custom subdomain; the mobile app builds and runs on physical devices against it.

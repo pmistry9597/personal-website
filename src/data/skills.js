@@ -1,0 +1,48 @@
+export const skills = {
+  languages: [
+    ['Rust', '#a0785c'],
+    ['Java', '#8a5a1a'],
+    ['Python', '#2d5a7a'],
+    ['TypeScript', '#275a96'],
+    ['JavaScript', '#b8962e'],
+    ['C++', '#004a7a'],
+  ],
+  frontend: [
+    ['React', '#4aa8c4'],
+    ['Angular', '#a83028'],
+    ['Next.js', '#1a1a1a'],
+    ['MUI', '#0068a0'],
+  ],
+  backend: [
+    ['Node.js', '#287728'],
+    ['Spring', '#4a7a3a'],
+    ['Axum', '#70543c'],
+    ['Tokio', '#a83a21'],
+    ['REST API', '#a838a8'],
+  ],
+  cloudDevOps: [
+    ['AWS', '#cc7700'],
+    ['Google Cloud', '#3a7bd5'],
+    ['Docker', '#1d78bc'],
+    ['Kubernetes', '#2854b4'],
+    ['Linux', '#c4961a'],
+    ['CI/CD', '#3d3d3d'],
+    ['Git', '#c03e2a'],
+    ['Bash', '#3d7a1a'],
+  ],
+  dataGraphics: [
+    ['PyTorch', '#b33a21'],
+    ['Ray Tracing', '#a838a8'],
+    ['OpenGL', '#446a84'],
+    ['WebGL', '#770000'],
+    ['Shaders', '#cc58a0'],
+    ['Computer Vision', '#cc5500'],
+  ],
+  methodologies: [
+    ['Agile/Scrum', '#568a2f'],
+    ['Test-Driven Dev', '#9a3a21'],
+    ['Code Review', '#185a96'],
+    ['Performance Opt.', '#a838a8'],
+    ['System Design', '#1a8a8a'],
+  ],
+};

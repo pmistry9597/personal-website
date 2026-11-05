@@ -1,0 +1,90 @@
+## What is RL?
+
+Reinforcement Learning trains agents to make sequential decisions by maximizing cumulative reward. The standard framework is the **Markov Decision Process (MDP)**: at each timestep, the agent observes state $s$, takes action $a$, receives reward $r$, and transitions to $s'$.
+
+> Behind breakthroughs like AlphaGo (2016) — the first ML system to defeat a top human Go player.
+
+---
+
+## Algorithms Implemented
+
+| Algorithm | Status | Type | Key Idea |
+|-----------|--------|------|----------|
+| **DQN** | ✅ Done | Value-based | Deep Q-Network with experience replay & target networks (DeepMind 2015) |
+| **Policy Gradients** | ✅ Done | Policy-based | Directly optimize policy via gradient ascent on expected return |
+| **PPO** | 🚧 Planned | Actor-Critic | Clipped surrogate objective for stable policy updates |
+| **SAC** | 🚧 Planned | Actor-Critic | Maximum entropy RL with automatic temperature tuning |
+
+First two are foundational; PPO/SAC are today's workhorses.
+
+---
+
+## DQN on LunarLander-v2
+
+<ProjectImage 
+  src="/images/dqn_lunarlanderv2.gif" 
+  alt="DQN LunarLander-v2 Success" 
+  caption="DQN solving LunarLander-v2 in Gymnasium — lands the ship between flags using discrete actions"
+/>
+
+Implemented from **DeepMind's 2015 Nature paper** (*Human-level control through deep reinforcement learning*). The environment is Gymnasium's `LunarLander-v2` (originally OpenAI, now maintained by Farama Foundation) — discrete action space: do nothing, fire left, fire main, fire right engine.
+
+### How DQN Works
+
+DQN learns an **action-value function** $Q(s,a)$ — the expected cumulative reward for taking action $a$ in state $s$ and following the optimal policy thereafter.
+
+- **Q-network**: Neural network approximating $Q(s,a; \theta)$
+- **Optimal Q-function** $Q^*(s,a)$ satisfies the Bellman optimality equation:
+  $$Q^*(s,a) = \mathbb{E}[r + \gamma \max_{a'} Q^*(s', a') \mid s, a]$$
+- **Loss**: Mean squared TD error — $(y - Q(s,a;\theta))^2$ where $y = r + \gamma \max_{a'} Q(s',a';\theta^-)$
+- **Target network** $\theta^-$: Frozen copy of $\theta$, updated periodically for stability
+
+> DQN only works in **discrete action spaces** (outputs Q-value per action). Continuous control requires actor-critic methods (DDPG, SAC, PPO).
+
+DQN converges **significantly faster and more reliably** than policy gradients on this environment — consistent with value-based methods excelling in sparse-reward, discrete-action settings where experience replay provides high sample efficiency.
+In my case, 600 episodes was enough to essentially guarantee maximal performance.
+
+---
+
+## Policy Gradients on LunarLander-v2
+
+Trained on Gymnasium's `LunarLander-v2` using **REINFORCE with baseline** (policy gradient with value function baseline for variance reduction). Unlike DQN, this directly parameterizes the policy $\pi_\theta(a|s)$ and optimizes via gradient ascent.
+
+### Convergence Behavior
+
+> Policy gradients are **far less sample-efficient** than value-based methods. While DQN solves in ~400 episodes, REINFORCE typically requires **~3000 iterations** (each a batch of 16–64 episodes) to reach near-optimal performance.
+
+Common issues observed:
+- Convergence to **local minima** — agent approaches landing pad but crashes
+- High variance in returns across training runs
+- Sensitive to learning rate and baseline quality
+
+This matches known literature: policy gradients excel when samples are cheap to generate, but struggle with sparse-reward environments like LunarLander.
+
+### From REINFORCE to Actor-Critic
+
+The baseline $V(s)$ is essentially a **critic** — this is the simplest actor-critic architecture. Modern algorithms build on this:
+
+| Algorithm | Key Innovation |
+|-----------|----------------|
+| **REINFORCE** | Monte Carlo returns, high variance |
+| **Actor-Critic** | Learned baseline $V(s)$, lower variance |
+| **PPO** | Clipped probability ratios, trust region |
+| **SAC** | Maximum entropy, automatic temperature tuning |
+
+The loss shifts from log-prob × return (REINFORCE) to clipped surrogate objectives (PPO) or entropy-regularized objectives (SAC).
+
+---
+
+## What's Next
+
+- **PPO** — clipped objective, GAE advantage estimation
+- **SAC** — twin critics, entropy regularization, auto-tuned $\alpha$
+- Continuous control environments (MuJoCo, Box2D)
+- Experiment tracking with Weights & Biases
+
+---
+
+## Demo
+
+[View Repo](https://github.com/pmistry9597/Reinforcement-Learning-Algo-Demo)

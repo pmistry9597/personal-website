@@ -1,0 +1,47 @@
+# Overview
+
+Space Explorer started as a way to build intuition for orbital mechanics — the same principles that govern satellites, planets, stars, and galaxies. The core insight comes from **Newton's Cannon** thought experiment: fire a cannonball fast enough and it falls *around* the Earth instead of into it. That's an orbit. This project simulates that idea interactively in the browser in 3D.
+
+This was done for my position at STEM Powering.
+
+---
+
+# The Physics
+
+## Numerical Integration
+
+Orbits are solved by integrating equations of motion over time. This became a real pain when orbits became unstable and confusing for students learning this for the first time.
+
+```
+position += velocity * dt
+velocity += 0.5 * (acceleration + new_acceleration) * dt
+```
+
+## Kepler's Laws for Stable Orbits
+
+Later I changed to use the analytical solution from **Kepler's equations**.
+
+- **Orbital velocity**: `v = √(μ/r)` for circular orbits
+- **Escape velocity**: `v_escape = √(2μ/r)`
+- **Orbital period**: `T = 2π√(a³/μ)` (Kepler's 3rd law)
+- **Vis-viva equation**: `v² = μ(2/r - 1/a)` for any ellipse
+
+Where `μ = GM` (standard gravitational parameter).
+
+This means every orbit you see is *mathematically correct* — not a rough approximation.
+I had to adapt this to a 3D environment, however, so this was adapted into actual direction vectors and velocity magnitudes.
+I used these equations to create a set of points along the orbit and I interpolated between them. Calculating speed was simply a matter of solving using total energy and gravitational energy.
+
+---
+
+# What I Learned
+
+- **Numerical stability matters** — Euler integration fails for orbits
+- **Kepler's laws aren't just history** — they're practical tools for computing actual orbital positions
+- **Two-body is sufficient** for most educational purposes; N-body adds chaos without much pedagogical value
+
+---
+
+# Demo
+
+[View Repo](https://github.com/pmistry9597/Space-Explorer)
