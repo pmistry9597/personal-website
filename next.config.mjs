@@ -6,7 +6,7 @@ const nextConfig = {
   images: { unoptimized: true },
 
   exportPathMap: async (defaultPathMap) => {
-    const slugs = await import("./src/data/project-slugs.json", { assert: { type: "json" } });
+    const slugs = await import("./src/data/project-slugs.json", { with: { type: "json" } });
 
     const projectRoutes = slugs.default.reduce((acc, slug) => {
       acc[`/projects/${slug}`] = {
