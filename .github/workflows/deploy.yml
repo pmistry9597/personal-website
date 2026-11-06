@@ -5,6 +5,8 @@ on:
     branches:
       - master # whenever pushed to this branch, execute build and deploy
 
+permissions:
+  contents: write
 
 jobs:
   build-and-deploy:
@@ -26,11 +28,20 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
-
-      - name: Deploy to Render
-        if: ${{ github.actor != 'nektos' }}
-        uses: render-oss/github-action@v0.1.0
+      
+      - name: Push out/ to deploy branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          service-id: ${{ secrets.RENDER_SERVICE_ID }}
-          api-key: ${{ secrets.RENDER_API_KEY }}
-          clear-cache: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          publish_branch: deploy
+          force_orphan: true
+
+      ##### ---- Don't do auto deploy just yet
+      # - name: Deploy to Render
+      #   if: ${{ github.actor != 'nektos' }}
+      #   uses: johnbeynon/render-deploy-action@v0.0.8
+      #   with:
+      #     service-id: ${{ secrets.RENDER_SERVICE_ID }}
+      #     api-key: ${{ secrets.RENDER_API_KEY }}
+      #     wait-for-success: true
