@@ -1,6 +1,7 @@
 import { Box, Container, Grid, Typography, Button, Paper } from "@mui/material";
 import Head from "next/head";
 import Link from "next/link";
+import OrbitalArt from '../components/orbital-art';
 
 export default function About() {
     return (
@@ -196,6 +197,11 @@ export default function About() {
                                     >
                                         But at the end of the day, there's something deeply satisfying and moving about creating something new, regardless of whatever the medium is. Even if many choices can be explained rationally, there's definitely something that cannot be explained so easily here.
                                     </Typography>
+                                    
+                                    <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+                                        <OrbitalArt size={400} />
+                                    </Box>
+
                                 </Paper>
                             </Grid>
                         </Grid>
