@@ -30,6 +30,7 @@ jobs:
           NODE_ENV: production
       
       - name: Push out/ to deploy branch
+        if: ${{ github.actor != 'nektos' }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -37,11 +38,10 @@ jobs:
           publish_branch: deploy
           force_orphan: true
 
-      ##### ---- Don't do auto deploy just yet
-      # - name: Deploy to Render
-      #   if: ${{ github.actor != 'nektos' }}
-      #   uses: johnbeynon/render-deploy-action@v0.0.8
-      #   with:
-      #     service-id: ${{ secrets.RENDER_SERVICE_ID }}
-      #     api-key: ${{ secrets.RENDER_API_KEY }}
-      #     wait-for-success: true
+      - name: Deploy to Render
+        if: ${{ github.actor != 'nektos' }}
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
+          wait-for-success: true
