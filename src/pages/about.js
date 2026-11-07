@@ -199,7 +199,7 @@ export default function About() {
                                     </Typography>
                                     
                                     <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-                                        <OrbitalArt size={400} />
+                                        <OrbitalArt size={150} />
                                     </Box>
 
                                 </Paper>
