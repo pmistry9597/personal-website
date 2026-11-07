@@ -82,7 +82,7 @@ export default function TimelineHighlight({ entry }) {
         alignItems: { xs: 'stretch', md: 'flex-start' },
       }}
     >
-      {/* Dot - centered above card on mobile, on line at left on desktop */}
+      {/* Dot - on line at left on desktop, nothing on mobile */}
       <Box
         sx={{
           position: 'absolute',
@@ -97,6 +97,7 @@ export default function TimelineHighlight({ entry }) {
           boxShadow: `0 0 0 2px ${color}`,
           zIndex: 2,
           mb: { xs: 16, md: 0 },
+          display: { xs: 'none', md: 'block' },
         }}
       />
 
